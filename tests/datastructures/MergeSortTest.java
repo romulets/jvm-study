@@ -48,13 +48,29 @@ public class MergeSortTest {
         assertArrayEquals(new Integer[]{2, 4, 6, 10, 12, 15, 16, 20, 27, 30,}, input);
     }
 
-    @ParameterizedTest(name = "small name")
+    @ParameterizedTest()
     @MethodSource("everySizeArgumentProvider")
-    public void sort_random(Integer[] input) {
+    public void sort_many(Integer[] input) {
         MergeSort.sort(input);
         for (int i = 0; i < input.length - 1; i++) {
             assertTrue(input[i] <=  input[i + 1],
                     "Pos ["+i+"] array failed to sort " + Arrays.toString(input));
+        }
+    }
+
+    @ParameterizedTest()
+    @MethodSource("everySizeArgumentProvider")
+    public void sort_doubleEdgedLinearArray_many(Integer[] input) {
+        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(input.length * 2);
+        for (Integer i : input) {
+            array.insertLast(i);
+        }
+
+        MergeSort.sort(array);
+
+        for (int i = 0; i < array.size() - 1; i++) {
+            assertTrue(array.at(i) <=  array.at(i + 1),
+                    "Pos ["+i+"] array failed to sort " + Arrays.toString(array.array));
         }
     }
 

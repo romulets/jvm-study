@@ -1,6 +1,8 @@
 package datastructures;
 
-public class DoubleEdgedLinearArray<T extends Object> {
+import java.util.Arrays;
+
+public class DoubleEdgedLinearArray<T> {
 
     private static final int GROWTH_RATIO = 2;
 
@@ -140,7 +142,7 @@ public class DoubleEdgedLinearArray<T extends Object> {
      * @return
      */
     public T at(int i) {
-        if (i > size - 1) {
+        if (i > size - 1 || i < 0) {
             throw new IndexOutOfBoundsException("Access " + i + " in an array of size " + size);
         }
         //noinspection unchecked
@@ -149,6 +151,34 @@ public class DoubleEdgedLinearArray<T extends Object> {
 
     private void cleanPos(int i) {
         array[head + i] = null;
+    }
+
+    /**
+     * O(n)
+     * Using lists due to a limitation of creating generic lists
+     * @param begin
+     * @param end
+     * @return copy of sub array
+     */
+    public DoubleEdgedLinearArray<T> subset(int begin, int end) {
+        DoubleEdgedLinearArray<T> copy = new DoubleEdgedLinearArray<T>(end - begin);
+        for (int i = begin; i < end; i++) {
+            copy.insertLast(at(i));
+        }
+        return  copy;
+    }
+
+    /**
+     * O(1).
+     * It just overrides. It doesn't increase size
+     * @param i
+     * @param value
+     */
+    public void set(int i, T value) {
+        if (i > size - 1 || i < 0) {
+            throw new IndexOutOfBoundsException("Access " + i + " in an array of size " + size);
+        }
+        array[head + i] = value;
     }
 
     /**
@@ -211,5 +241,10 @@ public class DoubleEdgedLinearArray<T extends Object> {
 
     public int capacity() {
         return capacity;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(Arrays.copyOfRange(array, head, tail + 1));
     }
 }
