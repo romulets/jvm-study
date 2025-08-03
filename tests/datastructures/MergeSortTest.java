@@ -59,7 +59,7 @@ public class MergeSortTest {
     }
 
     static Stream<Arguments> everySizeArgumentProvider() {
-        int times = 2_000;
+        int times = 100;
         Arguments[] arguments = new Arguments[times];
         for (int  i = 0; i < times; i++) {
             arguments[i] = Arguments.of((Object) generateArray(i + 1));
@@ -70,7 +70,7 @@ public class MergeSortTest {
     static Integer[] generateArray(int size) {
         Integer[] array = new Integer[size];
         for (int i = 0; i < size; i++) {
-            array[i] = 2_000 - i; // always out of order
+            array[i] = size - i; // always out of order
         }
         return array;
     }

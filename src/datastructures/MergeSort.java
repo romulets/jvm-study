@@ -21,16 +21,13 @@ public class MergeSort {
 
         int chunkSize = 1;
         int i = 0;
-//        int iterations = 0;
 
         while (i < array.length) {
-//            iterations++;
             int list1Begin = i;
             int list1End = Math.min(list1Begin + chunkSize, array.length);
             int list2Begin = i + chunkSize;
             int list2End = Math.min(list2Begin + chunkSize, array.length);
 
-            // if the second list needs to be merged into the first
             if (list2Begin < array.length) {
                 T[] firstHalf = Arrays.copyOfRange(array, list1Begin, list1End);    // O(n)
                 T[] secondHalf = Arrays.copyOfRange(array, list2Begin, list2End);   // O(n)
@@ -38,7 +35,6 @@ public class MergeSort {
                 int ptr1 = 0;
                 int ptr2 = 0;
                 for (int actualPos = list1Begin; actualPos < list2End; actualPos++) { // O(chunkSize * 2) -> O(n)
-//                    iterations++;
                     if (ptr1 == firstHalf.length) { // we exhausted firstHalf already
                         array[actualPos] = secondHalf[ptr2]; // set pt2;
                         ptr2++;
@@ -73,8 +69,6 @@ public class MergeSort {
                 i += chunkSize * 2;
             }
         }
-
-//        System.out.print(array.length + ";" + iterations + "\n");
     }
 
     /**

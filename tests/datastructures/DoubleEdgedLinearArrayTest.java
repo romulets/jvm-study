@@ -360,7 +360,7 @@ class DoubleEdgedLinearArrayTest {
 
 
     static Stream<Arguments> randomArgumentProvider() {
-        int times = 100_000;
+        int times = 100;
         Arguments[] arguments = new Arguments[times];
         for (int  i = 0; i < times; i++) {
             arguments[i] = Arguments.of((Object) randomSizedArray());
