@@ -1,7 +1,5 @@
 package datastructures;
 
-import java.util.Arrays;
-
 public class DoubleEdgedLinearArray<T extends Object> {
 
     private static final int GROWTH_RATIO = 2;
