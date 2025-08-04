@@ -16,8 +16,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(n)
-     *
-     * @param initialCapacity
      */
     public DoubleEdgedLinearArray(int initialCapacity) {
         if (initialCapacity < 1) {
@@ -41,8 +39,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(n)
-     *
-     * @param input
      */
     public DoubleEdgedLinearArray(T[] input) {
         if (input == null || input.length == 0) {
@@ -59,8 +55,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * Amortized O(1) since in most operations is O(1)
-     *
-     * @param value
      */
     public void insertLast(T value) {
         if (size == 0) {
@@ -86,8 +80,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * Amortized O(1) since in most operations is O(1)
-     *
-     * @param value
      */
     public void insertFirst(T value) {
         if (size == 0) {
@@ -126,9 +118,6 @@ public class DoubleEdgedLinearArray<T> {
      * O(n)
      * Adds a new value in the middle.
      * It doesn't add values beyond the end
-     *
-     * @param pos
-     * @param value
      */
     public void insertAt(int pos, T value) {
         if (pos > size) {
@@ -152,6 +141,9 @@ public class DoubleEdgedLinearArray<T> {
         }
     }
 
+    /**
+     * O(n) shift values to left
+     */
     public void deleteAt(int pos) {
         if (size == 0 || pos >= size || pos < 0) {
             throw new IndexOutOfBoundsException("Can't delete at position " + pos + " for size " + size);
@@ -220,9 +212,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(1) access. Leave array out of bounds handling to java
-     *
-     * @param i
-     * @return
      */
     public T at(int i) {
         if (i > size - 1 || i < 0) {
@@ -234,8 +223,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(1)
-     *
-     * @return
      */
     public T first() {
         return at(0);
@@ -243,8 +230,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(1)
-     *
-     * @return
      */
     public T last() {
         return at(size - 1);
@@ -252,8 +237,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(1)
-     *
-     * @param i
      */
     private void cleanPos(int i) {
         array[head + i] = null;
@@ -263,8 +246,6 @@ public class DoubleEdgedLinearArray<T> {
      * O(n)
      * Using lists due to a limitation of creating generic lists
      *
-     * @param begin
-     * @param end
      * @return copy of sub array
      */
     public DoubleEdgedLinearArray<T> subset(int begin, int end) {
@@ -278,9 +259,6 @@ public class DoubleEdgedLinearArray<T> {
     /**
      * O(1).
      * It just overrides. It doesn't increase size
-     *
-     * @param i
-     * @param value
      */
     public void set(int i, T value) {
         if (i > size - 1 || i < 0) {
@@ -319,8 +297,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(n) for the copy
-     *
-     * @param newArray
      */
     private void resize(Object[] newArray) {
         // find new head (leave 1/4 of it)
@@ -359,8 +335,6 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(n)
-     *
-     * @return
      */
     @Override
     public String toString() {

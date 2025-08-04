@@ -31,9 +31,6 @@ public class SortedArraySet<T extends Comparable<T>> {
     /**
      * O(log(n))
      * Finds value position
-     *
-     * @param value
-     * @return index
      */
     public int find(T value) {
         return BinarySearch.search(array, value);
@@ -65,8 +62,6 @@ public class SortedArraySet<T extends Comparable<T>> {
 
     /**
      * O(1)
-     *
-     * @return
      */
     public int size() {
         return array.size();
@@ -74,8 +69,6 @@ public class SortedArraySet<T extends Comparable<T>> {
 
     /**
      * O(n)
-     *
-     * @return
      */
     @Override
     public String toString() {

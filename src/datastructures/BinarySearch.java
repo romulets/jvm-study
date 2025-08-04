@@ -5,6 +5,11 @@ public class BinarySearch {
     public record IndexToInsertInOrder(boolean match, int index) {
     }
 
+    /**
+     * O(log(n))
+     *
+     * @return Return a pair of if it's an exact match and what index must be updated
+     */
     public static <T extends Comparable<T>> IndexToInsertInOrder findIndexToStaySorted(DoubleEdgedLinearArray<T> array, T value) {
         if (array.size() == 0) {
             return new IndexToInsertInOrder(false, 0);
@@ -69,9 +74,6 @@ public class BinarySearch {
 
     /**
      * O(log(n))
-     *
-     * @param array
-     * @param value
      * @return index of value. -1 if not found
      */
     public static <T extends Comparable<T>> int search(DoubleEdgedLinearArray<T> array, T value) {
@@ -101,8 +103,6 @@ public class BinarySearch {
     /**
      * O(log(n))
      *
-     * @param array
-     * @param value
      * @return index of value. -1 if not found
      */
     public static <T extends Comparable<T>> int search(T[] array, T value) {

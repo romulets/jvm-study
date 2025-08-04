@@ -12,8 +12,6 @@ public class MergeSort {
      * smaller problems and merge from smallest
      * (k=2) and grows on factor of 2 until
      * everything is merged.
-     *
-     * @param array
      */
     public static <T extends Comparable<T>> void sort(DoubleEdgedLinearArray<T> array) {
         if (array == null || array.size() < 2) {
@@ -80,8 +78,6 @@ public class MergeSort {
      * smaller problems and merge from smallest
      * (k=2) and grows on factor of 2 until
      * everything is merged.
-     *
-     * @param array
      */
     public static <T extends Comparable<T>> void sort(T[] array) {
         if (array == null || array.length < 2) {
@@ -147,8 +143,6 @@ public class MergeSort {
      * smaller problems and merge from smallest
      * (k=2) and grows on factor of 2 until
      * everything is merged.
-     *
-     * @param array
      */
     public static void sortByBook(Integer[] array) {
         if (array == null || array.length < 2) {
