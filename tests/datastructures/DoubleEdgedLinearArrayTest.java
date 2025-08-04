@@ -405,43 +405,58 @@ class DoubleEdgedLinearArrayTest {
     }
 
     @Test
-    void deleteAt_first() {
+    void deleteAt() {
         DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(new Integer[]{1,2,3,4,5});
 
-        array.deleteAt(0);
+        assertEquals(array.deleteAt(0), 1);
         assertEquals(array.array.length, 5);
         assertEquals(array.capacity(), 5);
         assertEquals(array.size(), 4);
-        assertEquals(array.head(), 0);
-        assertEquals(array.tail(), 3);
+        assertEquals(array.head(), 1);
+        assertEquals(array.tail(), 4);
 
-        array.deleteAt(0);
+        assertEquals(array.deleteAt(3), 5);
         assertEquals(array.array.length, 5);
         assertEquals(array.capacity(), 5);
         assertEquals(array.size(), 3);
-        assertEquals(array.head(), 0);
-        assertEquals(array.tail(), 2);
+        assertEquals(array.head(), 1);
+        assertEquals(array.tail(), 3);
 
-        array.deleteAt(0);
+        assertEquals(array.deleteAt(1), 3);
         assertEquals(array.array.length, 5);
         assertEquals(array.capacity(), 5);
         assertEquals(array.size(), 2);
-        assertEquals(array.head(), 0);
-        assertEquals(array.tail(), 1);
+        assertEquals(array.head(), 1);
+        assertEquals(array.tail(), 2);
 
-        array.deleteAt(0);
+        assertEquals(array.deleteAt(1), 4);
         assertEquals(array.array.length, 5);
         assertEquals(array.capacity(), 5);
         assertEquals(array.size(), 1);
-        assertEquals(array.head(), 0);
-        assertEquals(array.tail(), 0);
+        assertEquals(array.head(), 1);
+        assertEquals(array.tail(), 1);
 
-        array.deleteAt(0);
+        assertEquals(array.deleteAt(0), 2);
         assertEquals(array.array.length, 5);
         assertEquals(array.capacity(), 5);
         assertEquals(array.size(), 0);
-        assertEquals(array.head(), 0);
-        assertEquals(array.tail(), 0);
+        assertEquals(array.head(), 1);
+        assertEquals(array.tail(), 1);
+    }
+
+    @Test
+    void subset() {
+        Array<Integer> array = new DoubleEdgedLinearArray<>(new Integer[]{0,1,2,3,4});
+
+        for (int i = 0; i < array.size(); i++) {
+            for(int j = array.size() - 1; j >= i; j--) {
+                Array<Integer> subset = array.subset(i,j);
+                assertEquals(subset.size(), j - i);
+                for (int d = 0; d < j - i; d++) {
+                    assertEquals(subset.at(d), d + i);
+                }
+            }
+        }
     }
 
     @ParameterizedTest

@@ -19,7 +19,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
      */
     public DoubleEdgedLinearArray(int initialCapacity) {
         if (initialCapacity < 1) {
-            throw new IllegalStateException("Capacity must be larger than 1");
+            initialCapacity = GROWTH_RATIO * 8;
         }
 
         this.array = new Object[initialCapacity];
@@ -34,15 +34,20 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
      * O(n)
      */
     public DoubleEdgedLinearArray() {
-        this(GROWTH_RATIO * 8);
+        this(0);
     }
 
     /**
      * O(n)
      */
     public DoubleEdgedLinearArray(T[] input) {
-        if (input == null || input.length == 0) {
+        if (input == null) {
             throw new IllegalStateException("Invalid empty or null input array");
+        }
+
+        if (input.length == 0) {
+            // maybe bug lol
+            input = Arrays.copyOf(input, GROWTH_RATIO * 8);
         }
 
         this.array = Arrays.copyOf(input, input.length);
@@ -56,6 +61,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * Amortized O(1) since in most operations is O(1)
      */
+    @Override
     public void insertLast(T value) {
         if (size == 0) {
             array[tail] = value;
@@ -81,6 +87,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * Amortized O(1) since in most operations is O(1)
      */
+    @Override
     public void insertFirst(T value) {
         if (size == 0) {
             array[head] = value;
@@ -119,6 +126,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
      * Adds a new value in the middle.
      * It doesn't add values beyond the end
      */
+    @Override
     public void insertAt(int pos, T value) {
         if (pos > size) {
             throw new IndexOutOfBoundsException("Can't set position " + pos + " for size " + size);
@@ -144,10 +152,21 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * O(n) shift values to left
      */
-    public void deleteAt(int pos) {
+    @Override
+    public T deleteAt(int pos) {
         if (size == 0 || pos >= size || pos < 0) {
             throw new IndexOutOfBoundsException("Can't delete at position " + pos + " for size " + size);
         }
+
+        if (pos == 0) {
+            return deleteFirst();
+        }
+
+        if (pos == size - 1) {
+            return deleteLast();
+        }
+
+        T toBeDeleted = at(pos);
 
         // Copy values backward
         for (int i = pos; i < size - 1; i++) {
@@ -157,16 +176,17 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
         // clean tail
         array[tail] = null;
         size--;
-        if (size > 0) {
-            tail--;
-        }
+        tail--;
 
         shrinkIfNeeded();
+
+        return toBeDeleted;
     }
 
     /**
      * Amortized O(1) since in most operations is O(1)
      */
+    @Override
     public T deleteLast() {
         if (size == 0) {
             throw new IndexOutOfBoundsException("There are no elements to remove");
@@ -190,6 +210,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * Amortized O(1) since in most operations is O(1)
      */
+    @Override
     public T deleteFirst() {
         if (size == 0) {
             throw new IndexOutOfBoundsException("There are no elements to remove");
@@ -213,6 +234,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * O(1) access. Leave array out of bounds handling to java
      */
+    @Override
     public T at(int i) {
         if (i > size - 1 || i < 0) {
             throw new IndexOutOfBoundsException("Access " + i + " in an array of size " + size);
@@ -224,6 +246,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * O(1)
      */
+    @Override
     public T first() {
         return at(0);
     }
@@ -231,6 +254,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * O(1)
      */
+    @Override
     public T last() {
         return at(size - 1);
     }
@@ -248,8 +272,9 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
      *
      * @return copy of sub array
      */
+    @Override
     public DoubleEdgedLinearArray<T> subset(int begin, int end) {
-        DoubleEdgedLinearArray<T> copy = new DoubleEdgedLinearArray<T>(end - begin);
+        DoubleEdgedLinearArray<T> copy = new DoubleEdgedLinearArray<>(end - begin);
         for (int i = begin; i < end; i++) {
             copy.insertLast(at(i));
         }
@@ -260,6 +285,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
      * O(1).
      * It just overrides. It doesn't increase size
      */
+    @Override
     public void set(int i, T value) {
         if (i > size - 1 || i < 0) {
             throw new IndexOutOfBoundsException("Access " + i + " in an array of size " + size);

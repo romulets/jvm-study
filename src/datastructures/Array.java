@@ -8,7 +8,7 @@ public interface Array<T> {
 
     void insertAt(int pos, T value);
 
-    void deleteAt(int pos);
+    T deleteAt(int pos);
 
     T deleteLast();
 
