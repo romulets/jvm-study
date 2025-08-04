@@ -2,7 +2,7 @@ package datastructures;
 
 import java.util.Arrays;
 
-public class DoubleEdgedLinearArray<T> {
+public class DoubleEdgedLinearArray<T> implements Array<T> {
 
     private static final int GROWTH_RATIO = 2;
 

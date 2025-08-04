@@ -2,9 +2,9 @@ package datastructures;
 
 import datastructures.BinarySearch.IndexToInsertInOrder;
 
-public class SortedArraySet<T extends Comparable<T>> {
+public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
 
-    private final DoubleEdgedLinearArray<T> array;
+    private final Array<T> array;
 
     /**
      * O(1)
@@ -112,6 +112,5 @@ public class SortedArraySet<T extends Comparable<T>> {
     public String toString() {
         return array.toString();
     }
-
 
 }

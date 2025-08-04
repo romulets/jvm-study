@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class MergeSort {
 
     /**
-     * VERSION BY HEART USING DOUBLE EDGED LINEAR ARRAY
+     * VERSION BY HEART using own array
      * O(n*log(n)) - Takes a list a merge sorts it.
      * <p>
      * It does by splitting the array in multiple
@@ -13,7 +13,7 @@ public class MergeSort {
      * (k=2) and grows on factor of 2 until
      * everything is merged.
      */
-    public static <T extends Comparable<T>> void sort(DoubleEdgedLinearArray<T> array) {
+    public static <T extends Comparable<T>> void sort(Array<T> array) {
         if (array == null || array.size() < 2) {
             return;
         }
@@ -28,8 +28,8 @@ public class MergeSort {
             int list2End = Math.min(list2Begin + chunkSize, array.size());
 
             if (list2Begin < array.size()) {
-                DoubleEdgedLinearArray<T> firstHalf = array.subset(list1Begin, list1End);    // O(n)
-                DoubleEdgedLinearArray<T> secondHalf = array.subset(list2Begin, list2End);   // O(n)
+                Array<T> firstHalf = array.subset(list1Begin, list1End);    // O(n)
+                Array<T> secondHalf = array.subset(list2Begin, list2End);   // O(n)
 
                 int ptr1 = 0;
                 int ptr2 = 0;
