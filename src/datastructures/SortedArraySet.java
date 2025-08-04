@@ -63,15 +63,39 @@ public class SortedArraySet<T extends Comparable<T>> {
     /**
      * O(1)
      */
-    public T min() {
+    public T first() {
         return array.first();
     }
 
     /**
      * O(1)
      */
-    public T max() {
+    public T last() {
         return array.last();
+    }
+
+    /**
+     * O(log(n))
+     */
+    public T findPrevious(T value) {
+        int current = BinarySearch.search(array, value);
+        if (current < 1) {
+            return null;
+        }
+
+        return array.at(current - 1);
+    }
+
+    /**
+     * O(log(n))
+     */
+    public T findNext(T value) {
+        int current = BinarySearch.search(array, value);
+        if (current < 0 || current >= size() - 1) {
+            return null;
+        }
+
+        return array.at(current + 1);
     }
 
     /**

@@ -106,21 +106,51 @@ public class SortedArraySetTest {
     }
 
     @Test
-    void findMin_findMax() {
+    void findLast_findFirst() {
         SortedArraySet<String> set = new SortedArraySet<>(new String[]{"b", "d", "a", "c", "f", "e"});
-        assertEquals(set.min(), "a");
-        assertEquals(set.max(), "f");
+        assertEquals(set.first(), "a");
+        assertEquals(set.last(), "f");
 
         set.delete("a");
         set.delete("f");
 
-        assertEquals(set.min(), "b");
-        assertEquals(set.max(), "e");
+        assertEquals(set.first(), "b");
+        assertEquals(set.last(), "e");
 
         set.delete("c");
         set.delete("d");
 
-        assertEquals(set.min(), "b");
-        assertEquals(set.max(), "e");
+        assertEquals(set.first(), "b");
+        assertEquals(set.last(), "e");
+    }
+
+    @Test
+    void findPrevious() {
+        SortedArraySet<String> set = new SortedArraySet<>(new String[]{"b", "d", "a", "c", "f", "e"});
+        String[] expectedSequence = new String[]{"f", "e", "d", "c", "b", "a"};
+
+        String last = set.last();
+        int i = 0;
+        while(last != null) {
+            assertEquals(last, expectedSequence[i]);
+            last = set.findPrevious(last);
+            i++;
+        }
+
+    }
+
+    @Test
+    void findNext() {
+        SortedArraySet<String> set = new SortedArraySet<>(new String[]{"b", "d", "a", "c", "f", "e"});
+        String[] expectedSequence = new String[]{"a", "b", "c", "d", "e", "f"};
+
+        String next = set.first();
+        int i = 0;
+        while(next != null) {
+            assertEquals(next, expectedSequence[i]);
+            next = set.findNext(next);
+            i++;
+        }
+
     }
 }
