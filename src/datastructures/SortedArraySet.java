@@ -63,6 +63,20 @@ public class SortedArraySet<T extends Comparable<T>> {
     /**
      * O(1)
      */
+    public T min() {
+        return array.first();
+    }
+
+    /**
+     * O(1)
+     */
+    public T max() {
+        return array.last();
+    }
+
+    /**
+     * O(1)
+     */
     public int size() {
         return array.size();
     }

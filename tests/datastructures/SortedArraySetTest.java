@@ -104,4 +104,23 @@ public class SortedArraySetTest {
         set.delete("c");
         assertEquals(set.size(), 0);
     }
+
+    @Test
+    void findMin_findMax() {
+        SortedArraySet<String> set = new SortedArraySet<>(new String[]{"b", "d", "a", "c", "f", "e"});
+        assertEquals(set.min(), "a");
+        assertEquals(set.max(), "f");
+
+        set.delete("a");
+        set.delete("f");
+
+        assertEquals(set.min(), "b");
+        assertEquals(set.max(), "e");
+
+        set.delete("c");
+        set.delete("d");
+
+        assertEquals(set.min(), "b");
+        assertEquals(set.max(), "e");
+    }
 }
