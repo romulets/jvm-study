@@ -146,8 +146,10 @@ public class DoubleEdgedLinearArray<T> {
 
         // insert
         array[head + pos] = value;
-        tail++;
         size++;
+        if (size > 1) {
+            tail++;
+        }
     }
 
     /**
@@ -208,6 +210,24 @@ public class DoubleEdgedLinearArray<T> {
         }
         //noinspection unchecked
         return (T) array[head + i];
+    }
+
+    /**
+     * O(1)
+     *
+     * @return
+     */
+    public T first() {
+        return at(0);
+    }
+
+    /**
+     * O(1)
+     *
+     * @return
+     */
+    public T last() {
+        return at(size - 1);
     }
 
     /**
