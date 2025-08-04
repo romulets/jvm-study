@@ -4,6 +4,7 @@ public class BinarySearch {
 
     /**
      * O(log(n))
+     *
      * @param array
      * @param value
      * @return index of value. -1 if not found
@@ -34,6 +35,7 @@ public class BinarySearch {
 
     /**
      * O(log(n))
+     *
      * @param array
      * @param value
      * @return index of value. -1 if not found

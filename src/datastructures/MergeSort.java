@@ -1,18 +1,18 @@
 package datastructures;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class MergeSort {
 
     /**
      * VERSION BY HEART USING DOUBLE EDGED LINEAR ARRAY
      * O(n*log(n)) - Takes a list a merge sorts it.
-     *
+     * <p>
      * It does by splitting the array in multiple
      * smaller problems and merge from smallest
      * (k=2) and grows on factor of 2 until
      * everything is merged.
+     *
      * @param array
      */
     public static <T extends Comparable<T>> void sort(DoubleEdgedLinearArray<T> array) {
@@ -49,7 +49,7 @@ public class MergeSort {
                     }
 
                     // If ptr1 is larger than pt2
-                    if(firstHalf.at(ptr1).compareTo(secondHalf.at(ptr2)) > 0) {
+                    if (firstHalf.at(ptr1).compareTo(secondHalf.at(ptr2)) > 0) {
                         array.set(actualPos, secondHalf.at(ptr2)); // set pt2;
                         ptr2++;
                     } else {
@@ -75,11 +75,12 @@ public class MergeSort {
     /**
      * ATTEMPT BY HEART
      * O(n*log(n)) - Takes a list a merge sorts it.
-     *
+     * <p>
      * It does by splitting the array in multiple
      * smaller problems and merge from smallest
      * (k=2) and grows on factor of 2 until
      * everything is merged.
+     *
      * @param array
      */
     public static <T extends Comparable<T>> void sort(T[] array) {
@@ -116,7 +117,7 @@ public class MergeSort {
                     }
 
                     // If ptr1 is larger than pt2
-                    if(firstHalf[ptr1].compareTo(secondHalf[ptr2]) > 0) {
+                    if (firstHalf[ptr1].compareTo(secondHalf[ptr2]) > 0) {
                         array[actualPos] = secondHalf[ptr2]; // set pt2;
                         ptr2++;
                     } else {
@@ -141,11 +142,12 @@ public class MergeSort {
 
     /**
      * O(n*log(n)) - Takes a list a merge sorts it.
-     *
+     * <p>
      * It does by splitting the array in multiple
      * smaller problems and merge from smallest
      * (k=2) and grows on factor of 2 until
      * everything is merged.
+     *
      * @param array
      */
     public static void sortByBook(Integer[] array) {
@@ -206,9 +208,7 @@ public class MergeSort {
                     start2++;
                 }
 
-                for (int j = 0; j < totalSize; j++) {
-                    array[i+j] = tmp[j];
-                }
+                System.arraycopy(tmp, 0, array, i + 0, totalSize);
 
                 i += 2 * chunkSize;
             }
@@ -233,7 +233,7 @@ public class MergeSort {
 
         // O(n/2)
         // for each two pairs, sort them
-        for(int firstIndex = 0; firstIndex < array.length; firstIndex += 2) {
+        for (int firstIndex = 0; firstIndex < array.length; firstIndex += 2) {
             // make sure we are not going out of bounds
             int lastIndex = Math.min(firstIndex + 1, array.length - 1);
 

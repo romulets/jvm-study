@@ -53,8 +53,7 @@ public class MergeSortTest {
     public void sort_many(Integer[] input) {
         MergeSort.sort(input);
         for (int i = 0; i < input.length - 1; i++) {
-            assertTrue(input[i] <=  input[i + 1],
-                    "Pos ["+i+"] array failed to sort " + Arrays.toString(input));
+            assertTrue(input[i] <= input[i + 1], "Pos [" + i + "] array failed to sort " + Arrays.toString(input));
         }
     }
 
@@ -69,20 +68,20 @@ public class MergeSortTest {
         MergeSort.sort(array);
 
         for (int i = 0; i < array.size() - 1; i++) {
-            assertTrue(array.at(i) <=  array.at(i + 1),
-                    "Pos ["+i+"] array failed to sort " + Arrays.toString(array.array));
+            assertTrue(array.at(i) <= array.at(i + 1), "Pos [" + i + "] array failed to sort " + Arrays.toString(array.array));
         }
     }
 
     static Stream<Arguments> everySizeArgumentProvider() {
         int times = 100;
         Arguments[] arguments = new Arguments[times];
-        for (int  i = 0; i < times; i++) {
+        for (int i = 0; i < times; i++) {
             arguments[i] = Arguments.of((Object) generateArray(i + 1));
         }
 
         return Arrays.stream(arguments);
     }
+
     static Integer[] generateArray(int size) {
         Integer[] array = new Integer[size];
         for (int i = 0; i < size; i++) {

@@ -14,13 +14,14 @@ class BinarySearchTest {
 
     @Test
     void search_half() {
-        Integer[] array = new Integer[]{1, 2 ,3};
+        Integer[] array = new Integer[]{1, 2, 3};
 
         assertEquals(1, BinarySearch.search(array, 2));
     }
+
     @Test
     void search_edges() {
-        Integer[] array = new Integer[]{1, 2 ,3};
+        Integer[] array = new Integer[]{1, 2, 3};
 
         assertEquals(2, BinarySearch.search(array, 3));
         assertEquals(0, BinarySearch.search(array, 1));
@@ -28,7 +29,7 @@ class BinarySearchTest {
 
     @Test
     void search_even() {
-        Integer[] array = new Integer[]{1, 2 ,3, 4};
+        Integer[] array = new Integer[]{1, 2, 3, 4};
 
         assertEquals(0, BinarySearch.search(array, 1));
         assertEquals(1, BinarySearch.search(array, 2));
@@ -76,12 +77,13 @@ class BinarySearchTest {
     static Stream<Arguments> sortedArgumentProvider() {
         int times = 1000;
         Arguments[] arguments = new Arguments[times];
-        for (int  i = 0; i < times; i++) {
+        for (int i = 0; i < times; i++) {
             arguments[i] = Arguments.of((Object) generateSortedArray(i + 1));
         }
 
         return Arrays.stream(arguments);
     }
+
     static Integer[] generateSortedArray(int size) {
         Integer[] array = new Integer[size];
         for (int i = 0; i < size; i++) {

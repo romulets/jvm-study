@@ -14,6 +14,11 @@ public class DoubleEdgedLinearArray<T> {
     private int tail;
 
 
+    /**
+     * O(n)
+     *
+     * @param initialCapacity
+     */
     public DoubleEdgedLinearArray(int initialCapacity) {
         if (initialCapacity < 1) {
             throw new IllegalStateException("Capacity must be larger than 1");
@@ -28,7 +33,33 @@ public class DoubleEdgedLinearArray<T> {
     }
 
     /**
+     * O(n)
+     */
+    public DoubleEdgedLinearArray() {
+        this(GROWTH_RATIO * 8);
+    }
+
+    /**
+     * O(n)
+     *
+     * @param input
+     */
+    public DoubleEdgedLinearArray(T[] input) {
+        if (input == null || input.length == 0) {
+            throw new IllegalStateException("Invalid empty or null input array");
+        }
+
+        this.array = Arrays.copyOf(input, input.length);
+        this.size = input.length;
+        this.capacity = input.length;
+        this.initialCapacity = input.length;
+        this.head = 0;
+        this.tail = input.length - 1;
+    }
+
+    /**
      * Amortized O(1) since in most operations is O(1)
+     *
      * @param value
      */
     public void insertLast(T value) {
@@ -55,6 +86,7 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * Amortized O(1) since in most operations is O(1)
+     *
      * @param value
      */
     public void insertFirst(T value) {
@@ -91,6 +123,34 @@ public class DoubleEdgedLinearArray<T> {
     }
 
     /**
+     * O(n)
+     * Adds a new value in the middle.
+     * It doesn't add values beyond the end
+     *
+     * @param pos
+     * @param value
+     */
+    public void insertAt(int pos, T value) {
+        if (pos > size) {
+            throw new IndexOutOfBoundsException("Can't set position " + pos + " for size " + size);
+        }
+
+        if (size + head + 1 >= capacity) {
+            growCapacity();
+        }
+
+        // Copy values forward
+        for (int i = size; i > pos; i--) {
+            array[head + i] = array[head + i - 1];
+        }
+
+        // insert
+        array[head + pos] = value;
+        tail++;
+        size++;
+    }
+
+    /**
      * Amortized O(1) since in most operations is O(1)
      */
     public T deleteLast() {
@@ -116,7 +176,7 @@ public class DoubleEdgedLinearArray<T> {
     /**
      * Amortized O(1) since in most operations is O(1)
      */
-    public T deleteFirst(){
+    public T deleteFirst() {
         if (size == 0) {
             throw new IndexOutOfBoundsException("There are no elements to remove");
         }
@@ -138,6 +198,7 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(1) access. Leave array out of bounds handling to java
+     *
      * @param i
      * @return
      */
@@ -149,6 +210,11 @@ public class DoubleEdgedLinearArray<T> {
         return (T) array[head + i];
     }
 
+    /**
+     * O(1)
+     *
+     * @param i
+     */
     private void cleanPos(int i) {
         array[head + i] = null;
     }
@@ -156,6 +222,7 @@ public class DoubleEdgedLinearArray<T> {
     /**
      * O(n)
      * Using lists due to a limitation of creating generic lists
+     *
      * @param begin
      * @param end
      * @return copy of sub array
@@ -165,12 +232,13 @@ public class DoubleEdgedLinearArray<T> {
         for (int i = begin; i < end; i++) {
             copy.insertLast(at(i));
         }
-        return  copy;
+        return copy;
     }
 
     /**
      * O(1).
      * It just overrides. It doesn't increase size
+     *
      * @param i
      * @param value
      */
@@ -195,7 +263,7 @@ public class DoubleEdgedLinearArray<T> {
      * if size is less than a 1/4 of current capacity shrink to half of it (or initial capacity)
      * O(n) shrink for array allocation + copy of values
      */
-    private  void shrinkIfNeeded() {
+    private void shrinkIfNeeded() {
         // initial capacity or the ratio is not 1/4
         if (size == 0 || capacity == initialCapacity || capacity / size < 4) {
             return;
@@ -211,6 +279,7 @@ public class DoubleEdgedLinearArray<T> {
 
     /**
      * O(n) for the copy
+     *
      * @param newArray
      */
     private void resize(Object[] newArray) {
@@ -243,6 +312,11 @@ public class DoubleEdgedLinearArray<T> {
         return capacity;
     }
 
+    /**
+     * O(n)
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return Arrays.toString(Arrays.copyOfRange(array, head, tail + 1));
