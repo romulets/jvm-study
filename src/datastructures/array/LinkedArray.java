@@ -1,4 +1,4 @@
-package datastructures;
+package datastructures.array;
 
 public class LinkedArray<T> implements Array<T> {
 

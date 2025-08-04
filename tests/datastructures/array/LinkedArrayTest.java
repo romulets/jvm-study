@@ -1,5 +1,7 @@
-package datastructures;
+package datastructures.array;
 
+import datastructures.array.Array;
+import datastructures.array.LinkedArray;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,5 +1,7 @@
-package datastructures;
+package datastructures.array;
 
+import datastructures.array.Array;
+import datastructures.array.DoubleEdgedLinearArray;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

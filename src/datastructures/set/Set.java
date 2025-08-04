@@ -1,4 +1,4 @@
-package datastructures;
+package datastructures.set;
 
 public interface Set<T extends Comparable<T>> {
 

@@ -1,5 +1,7 @@
 package datastructures;
 
+import datastructures.array.Array;
+
 import java.util.Arrays;
 
 public class MergeSort {

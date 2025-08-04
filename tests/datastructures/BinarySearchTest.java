@@ -1,6 +1,7 @@
 package datastructures;
 
 import datastructures.BinarySearch.IndexToInsertInOrder;
+import datastructures.array.DoubleEdgedLinearArray;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

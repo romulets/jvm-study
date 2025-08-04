@@ -1,5 +1,7 @@
 package datastructures;
 
+import datastructures.array.Array;
+
 public class BinarySearch {
 
     public record IndexToInsertInOrder(boolean match, int index) {

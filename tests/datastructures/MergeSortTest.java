@@ -1,5 +1,6 @@
 package datastructures;
 
+import datastructures.array.DoubleEdgedLinearArray;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -68,7 +69,7 @@ public class MergeSortTest {
         MergeSort.sort(array);
 
         for (int i = 0; i < array.size() - 1; i++) {
-            assertTrue(array.at(i) <= array.at(i + 1), "Pos [" + i + "] array failed to sort " + Arrays.toString(array.array));
+            assertTrue(array.at(i) <= array.at(i + 1), "Pos [" + i + "] array failed to sort " + array);
         }
     }
 

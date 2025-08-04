@@ -1,6 +1,10 @@
-package datastructures;
+package datastructures.set;
 
+import datastructures.BinarySearch;
 import datastructures.BinarySearch.IndexToInsertInOrder;
+import datastructures.MergeSort;
+import datastructures.array.Array;
+import datastructures.array.DoubleEdgedLinearArray;
 
 public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
 

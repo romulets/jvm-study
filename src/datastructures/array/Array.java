@@ -1,4 +1,4 @@
-package datastructures;
+package datastructures.array;
 
 public interface Array<T> {
 
