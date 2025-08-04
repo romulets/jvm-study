@@ -51,8 +51,36 @@ public class SortedArraySet<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * O(log(n)) deletes entry if it exists
+     */
+    public void delete(T value) {
+        int idx = BinarySearch.search(array, value);
+        if (idx == -1) {
+            return;
+        }
+
+        array.deleteAt(idx);
+    }
+
+    /**
+     * O(1)
+     *
+     * @return
+     */
+    public int size() {
+        return array.size();
+    }
+
+    /**
+     * O(n)
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return array.toString();
     }
+
+
 }

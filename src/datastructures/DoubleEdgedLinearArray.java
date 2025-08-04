@@ -152,6 +152,26 @@ public class DoubleEdgedLinearArray<T> {
         }
     }
 
+    public void deleteAt(int pos) {
+        if (size == 0 || pos >= size || pos < 0) {
+            throw new IndexOutOfBoundsException("Can't delete at position " + pos + " for size " + size);
+        }
+
+        // Copy values backward
+        for (int i = pos; i < size - 1; i++) {
+            array[head + i] = array[head + i + 1];
+        }
+
+        // clean tail
+        array[tail] = null;
+        size--;
+        if (size > 0) {
+            tail--;
+        }
+
+        shrinkIfNeeded();
+    }
+
     /**
      * Amortized O(1) since in most operations is O(1)
      */
@@ -311,7 +331,12 @@ public class DoubleEdgedLinearArray<T> {
         }
 
         head = newHead;
-        tail = newHead + size - 1;
+        if (size > 1) {
+            tail = newHead + size - 1;
+        } else {
+            tail = head;
+        }
+
         array = newArray;
         capacity = newArray.length;
     }

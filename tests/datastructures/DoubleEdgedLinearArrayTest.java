@@ -393,6 +393,57 @@ class DoubleEdgedLinearArrayTest {
 //        System.out.println(Arrays.toString(array.array));
     }
 
+    @Test
+    void deleteAt_invalidIndex() {
+        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(new Integer[]{1,2,3});
+        assertThrows(IndexOutOfBoundsException.class, () -> array.deleteAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> array.deleteAt(3));
+
+        DoubleEdgedLinearArray<Integer> empty = new DoubleEdgedLinearArray<>();
+        assertThrows(IndexOutOfBoundsException.class, () -> empty.deleteAt(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> empty.deleteAt(1));
+    }
+
+    @Test
+    void deleteAt_first() {
+        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(new Integer[]{1,2,3,4,5});
+
+        array.deleteAt(0);
+        assertEquals(array.array.length, 5);
+        assertEquals(array.capacity(), 5);
+        assertEquals(array.size(), 4);
+        assertEquals(array.head(), 0);
+        assertEquals(array.tail(), 3);
+
+        array.deleteAt(0);
+        assertEquals(array.array.length, 5);
+        assertEquals(array.capacity(), 5);
+        assertEquals(array.size(), 3);
+        assertEquals(array.head(), 0);
+        assertEquals(array.tail(), 2);
+
+        array.deleteAt(0);
+        assertEquals(array.array.length, 5);
+        assertEquals(array.capacity(), 5);
+        assertEquals(array.size(), 2);
+        assertEquals(array.head(), 0);
+        assertEquals(array.tail(), 1);
+
+        array.deleteAt(0);
+        assertEquals(array.array.length, 5);
+        assertEquals(array.capacity(), 5);
+        assertEquals(array.size(), 1);
+        assertEquals(array.head(), 0);
+        assertEquals(array.tail(), 0);
+
+        array.deleteAt(0);
+        assertEquals(array.array.length, 5);
+        assertEquals(array.capacity(), 5);
+        assertEquals(array.size(), 0);
+        assertEquals(array.head(), 0);
+        assertEquals(array.tail(), 0);
+    }
+
     @ParameterizedTest
     @MethodSource("randomArgumentProvider")
     void randomTest(Integer[] input) {
