@@ -182,8 +182,43 @@ public class ChainHashSet<T> implements Set<T> {
         return null;
     }
 
+    /**
+     * O(n)
+     */
     @Override
     public T findPrevious(T value) {
+        int chainPos = findHashPosition(value, hashTable);
+        LinkedArray<T> chain = findChain(chainPos, hashTable);
+
+        boolean found = false;
+        // go backwards
+        for (int i = chain.size() - 1; i >= 0; i--) {
+            T current = chain.at(i);
+            if (!found && Objects.equals(value, current)) {
+                found = true;
+                continue;
+            }
+
+            // if it was found in the previous run, return previous;
+            if (found) {
+                return current;
+            }
+        }
+
+        // If it was not found null
+        if (!found) {
+            return null;
+        }
+
+        // if it was found but not returned, it's in some previous chain;
+        for (int chainIdx = chainPos - 1; chainIdx >= 0; chainIdx--) {
+            LinkedArray<T> nextChain = findChain(chainIdx, hashTable);
+            if (nextChain.size() > 0) {
+                return nextChain.last();
+            }
+        }
+
+        // This will happen in case there is no next
         return null;
     }
 
@@ -197,14 +232,15 @@ public class ChainHashSet<T> implements Set<T> {
 
         boolean found = false;
         for (int i = 0; i < chain.size(); i++) {
-            if (Objects.equals(value, chain.at(i))) {
+            T current = chain.at(i);
+            if (!found && Objects.equals(value, current)) {
                 found = true;
                 continue;
             }
 
             // if it was found in the previous run, just return it;
             if (found) {
-                return chain.at(i);
+                return current;
             }
         }
 

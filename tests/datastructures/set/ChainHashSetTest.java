@@ -167,17 +167,18 @@ public class ChainHashSetTest {
 
     @Test
     void findPrevious() {
-        ChainHashSet<String> set = new ChainHashSet<>(new String[]{"b", "d", "a", "c", "f", "e"});
-        String[] expectedSequence = new String[]{"f", "e", "d", "c", "b", "a"};
-
-        String last = set.last();
-        int i = 0;
-        while (last != null) {
-            assertEquals(last, expectedSequence[i]);
-            last = set.findPrevious(last);
-            i++;
+        ChainHashSet<String> set = new ChainHashSet<>(2);
+        for (String val : new String[]{"b", "d", "a", "c", "f", "e"}) {
+            set.add(val);
         }
 
+        String[] expectedSequence = new String[]{"f", "d", "b", "e", "c", "a"};
+
+        String last = set.last();
+        for (String val : expectedSequence) {
+            assertEquals(last, val);
+            last = set.findPrevious(last);
+        }
     }
 
     @Test
@@ -186,11 +187,9 @@ public class ChainHashSetTest {
         String[] expectedSequence = new String[]{"a", "b", "c", "d", "e", "f"};
 
         String next = set.first();
-        int i = 0;
-        while (next != null) {
-            assertEquals(next, expectedSequence[i]);
+        for (String val : expectedSequence) {
+            assertEquals(next, val);
             next = set.findNext(next);
-            i++;
         }
     }
 

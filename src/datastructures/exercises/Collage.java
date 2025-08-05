@@ -20,7 +20,7 @@ import datastructures.map.ChainHashMap;
 public class Collage {
 
     private LinkedArray.Node<Integer> layers;
-    private ChainHashMap<Integer, LinkedArray.Node<Integer>> cache;
+    private final ChainHashMap<Integer, LinkedArray.Node<Integer>> cache;
 
     /**
      * O(1)
