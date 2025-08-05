@@ -1,10 +1,10 @@
 package datastructures.set;
 
-public interface Set<T extends Comparable<T>> {
+public interface Set<T> {
 
-    int find(T value);
+    boolean contains(T value);
 
-    void insert(T value);
+    void add(T value);
 
     void delete(T value);
 

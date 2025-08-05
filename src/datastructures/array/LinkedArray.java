@@ -220,6 +220,10 @@ public class LinkedArray<T> implements Array<T> {
      */
     @Override
     public T first() {
+        if (size == 0) {
+            return null;
+        }
+
         return head.value;
     }
 
@@ -228,6 +232,10 @@ public class LinkedArray<T> implements Array<T> {
      */
     @Override
     public T last() {
+        if (size == 0) {
+            return null;
+        }
+
         return tail.value;
     }
 

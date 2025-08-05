@@ -34,16 +34,16 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
 
     /**
      * O(log(n))
-     * Finds value position
+     * Checks if value exists within set
      */
-    public int find(T value) {
-        return BinarySearch.search(array, value);
+    public boolean contains(T value) {
+        return BinarySearch.search(array, value) > -1;
     }
 
     /**
      * O(log(n)) finds what position to insert and insert it
      */
-    public void insert(T value) {
+    public void add(T value) {
         IndexToInsertInOrder idx = BinarySearch.findIndexToStaySorted(array, value);
         if (idx.match()) { // if it's a match, override
             array.set(idx.index(), value);

@@ -50,7 +50,7 @@ public class MergeSortTest {
     }
 
     @ParameterizedTest()
-    @MethodSource("everySizeArgumentProvider")
+    @MethodSource("outOfOrderArgumentsProvider")
     public void sort_many(Integer[] input) {
         MergeSort.sort(input);
         for (int i = 0; i < input.length - 1; i++) {
@@ -59,7 +59,7 @@ public class MergeSortTest {
     }
 
     @ParameterizedTest()
-    @MethodSource("everySizeArgumentProvider")
+    @MethodSource("outOfOrderArgumentsProvider")
     public void sort_doubleEdgedLinearArray_many(Integer[] input) {
         DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(input.length * 2);
         for (Integer i : input) {
@@ -73,7 +73,7 @@ public class MergeSortTest {
         }
     }
 
-    static Stream<Arguments> everySizeArgumentProvider() {
+    static Stream<Arguments> outOfOrderArgumentsProvider() {
         int times = 100;
         Arguments[] arguments = new Arguments[times];
         for (int i = 0; i < times; i++) {
