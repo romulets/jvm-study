@@ -47,8 +47,8 @@ public class ChainHashSet<T> implements Set<T> {
      */
     @Override
     public boolean contains(T value) {
-        int pos = findHashPosition(value);
-        LinkedArray<T> chain = findChain(pos);
+        int pos = findHashPosition(value, hashTable);
+        LinkedArray<T> chain = findChain(pos, hashTable);
 
         for (int i = 0; i < chain.size(); i++) {
             if (Objects.equals(value, chain.at(i))) {
@@ -64,23 +64,41 @@ public class ChainHashSet<T> implements Set<T> {
      */
     @Override
     public void add(T value) {
-        int pos = findHashPosition(value);
-        LinkedArray<T> chain = findChain(pos);
-
-        if (chain.size() == MAX_CHAIN_SIZE) {
-            throw new IndexOutOfBoundsException("chain size = 10, needs to be fixed");
+        if (add(hashTable, value, true)) {
+            size++;
         }
+    }
+
+    /**
+     * Amortized O(1)
+     * "Stateless" add to reuse once growing
+     */
+    private boolean add(Object[] hashTable, T value, boolean allowGrowth) {
+        int pos = findHashPosition(value, hashTable);
+        LinkedArray<T> chain = findChain(pos, hashTable);
 
         for (int i = 0; i < chain.size(); i++) {
             if (Objects.equals(value, chain.at(i))) {
                 // already exists
-                return;
+                return false;
             }
+        }
+
+        if (chain.size() == MAX_CHAIN_SIZE) {
+            if (!allowGrowth) {
+                throw new IllegalStateException("Bad implementation where growth needed to happen twice. " +
+                        "This will only occur if after growth we have high collision factor still, not " +
+                        "spreading the values as it should. If this happen, FIND A BETTER HASH ALGORITHM");
+            }
+
+            hashTable = grow();
+            pos = findHashPosition(value, hashTable);
+            chain = findChain(pos, hashTable);
         }
 
         chain.insertLast(value);
         hashTable[pos] = chain;
-        size++;
+        return true;
     }
 
     /**
@@ -88,8 +106,8 @@ public class ChainHashSet<T> implements Set<T> {
      */
     @Override
     public void delete(T value) {
-        int pos = findHashPosition(value);
-        LinkedArray<T> chain = findChain(pos);
+        int pos = findHashPosition(value, hashTable);
+        LinkedArray<T> chain = findChain(pos, hashTable);
 
         if (chain.size() == 0) {
             return;
@@ -114,7 +132,7 @@ public class ChainHashSet<T> implements Set<T> {
         }
 
         for (int i = 0; i < hashTable.length; i++) {
-            T value = findChain(i).first();
+            T value = findChain(i, hashTable).first();
             if (value != null) {
                 return value;
             }
@@ -133,7 +151,7 @@ public class ChainHashSet<T> implements Set<T> {
         }
 
         for (int i = hashTable.length - 1; i >= 0; i--) {
-            T value = findChain(i).last();
+            T value = findChain(i, hashTable).last();
             if (value != null) {
                 return value;
             }
@@ -152,8 +170,8 @@ public class ChainHashSet<T> implements Set<T> {
      */
     @Override
     public T findNext(T value) {
-        int chainPos = findHashPosition(value);
-        LinkedArray<T> chain = findChain(chainPos);
+        int chainPos = findHashPosition(value, hashTable);
+        LinkedArray<T> chain = findChain(chainPos, hashTable);
 
         boolean found = false;
         for (int i = 0; i < chain.size(); i++) {
@@ -174,8 +192,8 @@ public class ChainHashSet<T> implements Set<T> {
         }
 
         // if it was found but not returned, it's in some next chain;
-        for(int chainIdx = chainPos + 1; chainIdx < hashTable.length; chainIdx++) {
-            LinkedArray<T> nextChain = findChain(chainIdx);
+        for (int chainIdx = chainPos + 1; chainIdx < hashTable.length; chainIdx++) {
+            LinkedArray<T> nextChain = findChain(chainIdx, hashTable);
             if (nextChain.size() > 0) {
                 return nextChain.first();
             }
@@ -183,14 +201,18 @@ public class ChainHashSet<T> implements Set<T> {
 
         // This will happen in case there is no next
         return null;
-     }
+    }
 
     @Override
     public int size() {
         return size;
     }
 
-    private LinkedArray<T> findChain(int pos) {
+    public int capacity() {
+        return hashTable.length;
+    }
+
+    private LinkedArray<T> findChain(int pos, Object[] hashTable) {
         LinkedArray<T> chain;
         if (hashTable[pos] == null) {
             chain = new LinkedArray<T>();
@@ -205,8 +227,22 @@ public class ChainHashSet<T> implements Set<T> {
      * O(n)
      * I know this is dump and very collision prone. I'm doing for simplicity
      */
-    private int findHashPosition(T value) {
-        return Objects.hash(value) % hashTable.length;
+    private int findHashPosition(T value, Object[] hashTable) {
+        return Math.abs(Objects.hash(value) % hashTable.length);
+    }
+
+    private Object[] grow() {
+        int newCapacity = GROWTH_RATIO * hashTable.length;
+        Object[] newHashTable = new Object[newCapacity];
+
+        T val = first();
+        while (val != null) {
+            add(newHashTable, val, false);
+            val = findNext(val);
+        }
+
+        this.hashTable = newHashTable;
+        return newHashTable;
     }
 
     @Override
@@ -216,7 +252,7 @@ public class ChainHashSet<T> implements Set<T> {
         builder.append("<");
         boolean appendComma = false;
         for (int i = 0; i < hashTable.length; i++) {
-            if (findChain(i).size() == 0) {
+            if (findChain(i, hashTable).size() == 0) {
                 continue;
             }
 
@@ -224,7 +260,7 @@ public class ChainHashSet<T> implements Set<T> {
                 builder.append(",");
             }
 
-            builder.append(findChain(i));
+            builder.append(findChain(i, hashTable));
             appendComma = true;
         }
 

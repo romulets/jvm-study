@@ -75,6 +75,28 @@ public class ChainHashSetTest {
         assertEquals(set.size(), 6);
     }
 
+    @Test
+    void add_growth() {
+        ChainHashSet<Integer> set = new ChainHashSet<>(2);
+        for (int i = 0; i < 10_000; i++) {
+            set.add(i);
+        }
+
+        assertEquals(set.capacity(), 1024);
+        assertEquals(set.size(), 10_000);
+        set.add(1);
+        assertEquals(set.capacity(), 1024);
+        assertEquals(set.size(), 10_000);
+
+        for (int i = 0; i < 241; i++) {
+            set.add(i * -1);
+        }
+
+        assertEquals(set.capacity(), 2048);
+        assertEquals(set.size(), 10_240);
+
+    }
+
 
     @Test
     void delete() {
