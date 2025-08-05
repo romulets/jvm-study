@@ -2,10 +2,14 @@ package datastructures.array;
 
 public class LinkedArray<T> implements Array<T> {
 
-    static class Node<T> {
-        private T value;
-        private Node<T> next;
-        private Node<T> previous;
+    /**
+     * Public for educational purposes, but since it's not exposed
+     * from the linked array, should not cause too much harm
+     */
+    public static class Node<T> {
+        public T value;
+        public Node<T> next;
+        public Node<T> previous;
 
         public Node(T value) {
             this.value = value;

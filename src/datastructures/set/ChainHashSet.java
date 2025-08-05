@@ -1,6 +1,7 @@
 package datastructures.set;
 
 import datastructures.array.LinkedArray;
+import datastructures.map.ChainHashMap;
 
 import java.util.Objects;
 
@@ -43,20 +44,41 @@ public class ChainHashSet<T> implements Set<T> {
     }
 
     /**
-     * O(n) considering that chain doesn't grow bigger than {ChainHashSet.MAX_CHAIN_SIZE}
+     * O(1) considering that chain doesn't grow bigger than {ChainHashSet.MAX_CHAIN_SIZE}
      */
     @Override
     public boolean contains(T value) {
-        int pos = findHashPosition(value, hashTable);
-        LinkedArray<T> chain = findChain(pos, hashTable);
+        int pos = findHashPosition(value, hashTable); // O(1)
+        LinkedArray<T> chain = findChain(pos, hashTable); // O(1)
 
-        for (int i = 0; i < chain.size(); i++) {
+        for (int i = 0; i < chain.size(); i++) { // O(10)
             if (Objects.equals(value, chain.at(i))) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * I know this seems dumb, but it's super useful
+     * for HashMap. We search by hash, but some metadata
+     * not present in the hash might be the result (KeyValue)
+     * <p>
+     * O(1) considering that chain doesn't grow bigger than {ChainHashSet.MAX_CHAIN_SIZE}
+     */
+    public T find(T value) {
+        int pos = findHashPosition(value, hashTable);  // O(1)
+        LinkedArray<T> chain = findChain(pos, hashTable);  // O(1)
+
+        for (int i = 0; i < chain.size(); i++) {  // O(10)
+            T foundValue = chain.at(i);
+            if (Objects.equals(value, foundValue)) {
+                return foundValue;
+            }
+        }
+
+        return null;
     }
 
     /**
