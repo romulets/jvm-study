@@ -1,7 +1,6 @@
 package datastructures.set;
 
 import datastructures.array.LinkedArray;
-import datastructures.map.ChainHashMap;
 
 import java.util.Objects;
 
@@ -48,16 +47,7 @@ public class ChainHashSet<T> implements Set<T> {
      */
     @Override
     public boolean contains(T value) {
-        int pos = findHashPosition(value, hashTable); // O(1)
-        LinkedArray<T> chain = findChain(pos, hashTable); // O(1)
-
-        for (int i = 0; i < chain.size(); i++) { // O(10)
-            if (Objects.equals(value, chain.at(i))) {
-                return true;
-            }
-        }
-
-        return false;
+      return find(value) != null;
     }
 
     /**
@@ -67,6 +57,7 @@ public class ChainHashSet<T> implements Set<T> {
      * <p>
      * O(1) considering that chain doesn't grow bigger than {ChainHashSet.MAX_CHAIN_SIZE}
      */
+    @Override
     public T find(T value) {
         int pos = findHashPosition(value, hashTable);  // O(1)
         LinkedArray<T> chain = findChain(pos, hashTable);  // O(1)
@@ -227,11 +218,11 @@ public class ChainHashSet<T> implements Set<T> {
      */
     @Override
     public T findNext(T value) {
-        int chainPos = findHashPosition(value, hashTable);
-        LinkedArray<T> chain = findChain(chainPos, hashTable);
+        int chainPos = findHashPosition(value, hashTable); //O(1)
+        LinkedArray<T> chain = findChain(chainPos, hashTable); //O(1)
 
         boolean found = false;
-        for (int i = 0; i < chain.size(); i++) {
+        for (int i = 0; i < chain.size(); i++) { // O(10)
             T current = chain.at(i);
             if (!found && Objects.equals(value, current)) {
                 found = true;
@@ -250,7 +241,7 @@ public class ChainHashSet<T> implements Set<T> {
         }
 
         // if it was found but not returned, it's in some next chain;
-        for (int chainIdx = chainPos + 1; chainIdx < hashTable.length; chainIdx++) {
+        for (int chainIdx = chainPos + 1; chainIdx < hashTable.length; chainIdx++) { //O(n)
             LinkedArray<T> nextChain = findChain(chainIdx, hashTable);
             if (nextChain.size() > 0) {
                 return nextChain.first();
@@ -282,13 +273,16 @@ public class ChainHashSet<T> implements Set<T> {
     }
 
     /**
-     * O(n)
+     * O(1)
      * I know this is dump and very collision prone. I'm doing for simplicity
      */
     private int findHashPosition(T value, Object[] hashTable) {
         return Math.abs(Objects.hash(value) % hashTable.length);
     }
 
+    /**
+     * O(n)
+     */
     private Object[] grow() {
         int newCapacity = GROWTH_RATIO * hashTable.length;
         Object[] newHashTable = new Object[newCapacity];
