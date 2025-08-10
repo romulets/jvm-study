@@ -1,6 +1,6 @@
-package datastructures.array;
+package datastructures.sequence;
 
-public class LinkedArray<T> implements Array<T> {
+public class LinkedSequence<T> implements Sequence<T> {
 
     /**
      * Public for educational purposes, but since it's not exposed
@@ -28,13 +28,13 @@ public class LinkedArray<T> implements Array<T> {
     /**
      * O(1)
      */
-    public LinkedArray() {
+    public LinkedSequence() {
     }
 
     /**
      * O(n)
      */
-    public LinkedArray(T[] initialValues) {
+    public LinkedSequence(T[] initialValues) {
         if (initialValues == null) {
             throw new IllegalArgumentException("Argument can't be null");
         }
@@ -247,13 +247,13 @@ public class LinkedArray<T> implements Array<T> {
      * O(n)
      */
     @Override
-    public Array<T> subset(int begin, int end) {
+    public Sequence<T> subset(int begin, int end) {
         Node<T> current = head;
         for (int i = 0; i < begin; i++) {
             current = current.next;
         }
 
-        Array<T> subset = new LinkedArray<>();
+        Sequence<T> subset = new LinkedSequence<>();
         for (int i = 0; i < end - begin; i++) {
             subset.insertLast(current.value);
             current = current.next;

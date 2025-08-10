@@ -1,6 +1,6 @@
 package datastructures.set;
 
-import datastructures.array.LinkedArray;
+import datastructures.sequence.LinkedSequence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -226,7 +225,7 @@ public class ChainHashSetTest {
     @MethodSource("outOfOrderArgumentsProvider")
     void testGrowth(Integer[] input) {
         ChainHashSet<Integer> set = new ChainHashSet<>();
-        LinkedArray<Integer> allSeen = new LinkedArray<>(input);
+        LinkedSequence<Integer> allSeen = new LinkedSequence<>(input);
 
         for (int i = 0; i < input.length; i++) {
             set.add(i);

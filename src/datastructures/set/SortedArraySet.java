@@ -3,33 +3,33 @@ package datastructures.set;
 import datastructures.BinarySearch;
 import datastructures.BinarySearch.IndexToInsertInOrder;
 import datastructures.MergeSort;
-import datastructures.array.Array;
-import datastructures.array.DoubleEdgedLinearArray;
+import datastructures.sequence.Sequence;
+import datastructures.sequence.DoubleEdgedLinearSequence;
 
 public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
 
-    private final Array<T> array;
+    private final Sequence<T> sequence;
 
     /**
      * O(1)
      */
     public SortedArraySet() {
-        array = new DoubleEdgedLinearArray<>();
+        sequence = new DoubleEdgedLinearSequence<>();
     }
 
     /**
      * O(1)
      */
     public SortedArraySet(int initialCapacity) {
-        array = new DoubleEdgedLinearArray<>(initialCapacity);
+        sequence = new DoubleEdgedLinearSequence<>(initialCapacity);
     }
 
     /**
      * O(n*log(n))
      */
     public SortedArraySet(T[] values) {
-        array = new DoubleEdgedLinearArray<>(values);
-        MergeSort.sort(array);
+        sequence = new DoubleEdgedLinearSequence<>(values);
+        MergeSort.sort(sequence);
     }
 
     /**
@@ -38,7 +38,7 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public boolean contains(T value) {
-        return BinarySearch.search(array, value) > -1;
+        return BinarySearch.search(sequence, value) > -1;
     }
 
     /**
@@ -46,11 +46,11 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public void add(T value) {
-        IndexToInsertInOrder idx = BinarySearch.findIndexToStaySorted(array, value);
+        IndexToInsertInOrder idx = BinarySearch.findIndexToStaySorted(sequence, value);
         if (idx.match()) { // if it's a match, override
-            array.set(idx.index(), value);
+            sequence.set(idx.index(), value);
         } else { // else insert
-            array.insertAt(idx.index(), value);
+            sequence.insertAt(idx.index(), value);
         }
     }
 
@@ -59,12 +59,12 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public void delete(T value) {
-        int idx = BinarySearch.search(array, value);
+        int idx = BinarySearch.search(sequence, value);
         if (idx == -1) {
             return;
         }
 
-        array.deleteAt(idx);
+        sequence.deleteAt(idx);
     }
 
     /**
@@ -72,7 +72,7 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public T first() {
-        return array.first();
+        return sequence.first();
     }
 
     /**
@@ -80,7 +80,7 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public T last() {
-        return array.last();
+        return sequence.last();
     }
 
     /**
@@ -88,12 +88,12 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public T findPrevious(T value) {
-        int current = BinarySearch.search(array, value);
+        int current = BinarySearch.search(sequence, value);
         if (current < 1) {
             return null;
         }
 
-        return array.at(current - 1);
+        return sequence.at(current - 1);
     }
 
     /**
@@ -101,22 +101,22 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public T findNext(T value) {
-        int current = BinarySearch.search(array, value);
+        int current = BinarySearch.search(sequence, value);
         if (current < 0 || current >= size() - 1) {
             return null;
         }
 
-        return array.at(current + 1);
+        return sequence.at(current + 1);
     }
 
     @Override
     public T find(T value) {
-        int pos = BinarySearch.search(array, value);
+        int pos = BinarySearch.search(sequence, value);
         if(pos < 0) {
             return null;
         }
 
-        return array.at(pos);
+        return sequence.at(pos);
     }
 
     /**
@@ -124,7 +124,7 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public int size() {
-        return array.size();
+        return sequence.size();
     }
 
     /**
@@ -132,7 +132,7 @@ public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
      */
     @Override
     public String toString() {
-        return array.toString();
+        return sequence.toString();
     }
 
 }

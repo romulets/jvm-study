@@ -1,16 +1,14 @@
-package datastructures.array;
+package datastructures.sequence;
 
-import datastructures.array.Array;
-import datastructures.array.LinkedArray;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LinkedArrayTest {
+class LinkedSequenceTest {
 
     @Test
     void insertFirst() {
-        LinkedArray<String> array = new LinkedArray<>();
+        LinkedSequence<String> array = new LinkedSequence<>();
         array.insertFirst("1");
         array.insertFirst("2");
         array.insertFirst("3");
@@ -28,7 +26,7 @@ class LinkedArrayTest {
 
     @Test
     void insertLast() {
-        LinkedArray<String> array = new LinkedArray<>();
+        LinkedSequence<String> array = new LinkedSequence<>();
         array.insertLast("1");
         array.insertLast("2");
         array.insertLast("3");
@@ -48,14 +46,14 @@ class LinkedArrayTest {
 
     @Test
     void insertAt_outOfBound() {
-        LinkedArray<String> array = new LinkedArray<>();
+        LinkedSequence<String> array = new LinkedSequence<>();
         assertThrows(IndexOutOfBoundsException.class, () -> array.insertAt(-1, "should fail"));
         assertThrows(IndexOutOfBoundsException.class, () -> array.insertAt(1, "should fail"));
     }
 
     @Test
     void insertAt() {
-        LinkedArray<String> array = new LinkedArray<>();
+        LinkedSequence<String> array = new LinkedSequence<>();
         array.insertAt(0, "1");
         array.insertAt(1, "3");
         array.insertAt(1, "2");
@@ -73,11 +71,11 @@ class LinkedArrayTest {
 
     @Test
     void deleteAt_invalidIndex() {
-        LinkedArray<Integer> array = new LinkedArray<>(new Integer[]{1, 2, 3});
+        LinkedSequence<Integer> array = new LinkedSequence<>(new Integer[]{1, 2, 3});
         assertThrows(IndexOutOfBoundsException.class, () -> array.deleteAt(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> array.deleteAt(3));
 
-        LinkedArray<Integer> empty = new LinkedArray<>();
+        LinkedSequence<Integer> empty = new LinkedSequence<>();
         assertThrows(IndexOutOfBoundsException.class, () -> empty.deleteAt(0));
         assertThrows(IndexOutOfBoundsException.class, () -> empty.deleteAt(1));
     }
@@ -87,7 +85,7 @@ class LinkedArrayTest {
      */
     @Test
     void deleteAt() {
-        LinkedArray<Integer> array = new LinkedArray<>(new Integer[]{1, 2, 3, 4, 5});
+        LinkedSequence<Integer> array = new LinkedSequence<>(new Integer[]{1, 2, 3, 4, 5});
 
         assertEquals(array.deleteAt(0), 1);
         assertEquals(array.size(), 4);
@@ -118,7 +116,7 @@ class LinkedArrayTest {
 
     @Test
     void set() {
-        LinkedArray<Integer> array = new LinkedArray<>(new Integer[]{1, 2, 3, 4, 5});
+        LinkedSequence<Integer> array = new LinkedSequence<>(new Integer[]{1, 2, 3, 4, 5});
 
         array.set(0, 20);
         assertEquals(array.size(), 5);
@@ -163,11 +161,11 @@ class LinkedArrayTest {
 
     @Test
     void subset() {
-        Array<Integer> array = new LinkedArray<>(new Integer[]{0,1,2,3,4});
+        Sequence<Integer> sequence = new LinkedSequence<>(new Integer[]{0,1,2,3,4});
 
-        for (int i = 0; i < array.size(); i++) {
-            for(int j = array.size() - 1; j >= i; j--) {
-                Array<Integer> subset = array.subset(i,j);
+        for (int i = 0; i < sequence.size(); i++) {
+            for(int j = sequence.size() - 1; j >= i; j--) {
+                Sequence<Integer> subset = sequence.subset(i,j);
                 assertEquals(subset.size(), j - i);
                 for (int d = 0; d < j - i; d++) {
                     assertEquals(subset.at(d), d + i);

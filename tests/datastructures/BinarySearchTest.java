@@ -1,7 +1,7 @@
 package datastructures;
 
 import datastructures.BinarySearch.IndexToInsertInOrder;
-import datastructures.array.DoubleEdgedLinearArray;
+import datastructures.sequence.DoubleEdgedLinearSequence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -56,7 +56,7 @@ class BinarySearchTest {
 
     @Test
     void findIndexToStaySorted_empty() {
-        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>();
+        DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>();
         IndexToInsertInOrder idx = BinarySearch.findIndexToStaySorted(array, 3);
         assertFalse(idx.match());
         assertEquals(idx.index(), 0);
@@ -65,7 +65,7 @@ class BinarySearchTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource("findIndexToStaySorted")
     public void findIndexToStaySorted(String name, Integer[] input, int searchValue, IndexToInsertInOrder expected) {
-        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(input);
+        DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(input);
         IndexToInsertInOrder idx = BinarySearch.findIndexToStaySorted(array, searchValue);
         assertEquals(expected, idx);
     }
@@ -127,7 +127,7 @@ class BinarySearchTest {
     @ParameterizedTest()
     @MethodSource("sortedArgumentProvider")
     public void search_doubleEdgedLinearArray_many(Integer[] input) {
-        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(input.length * 2);
+        DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(input.length * 2);
         for (Integer i : input) {
             array.insertLast(i);
         }

@@ -1,6 +1,6 @@
 package datastructures.exercises;
 
-import datastructures.array.LinkedArray;
+import datastructures.sequence.LinkedSequence;
 import datastructures.map.ChainHashMap;
 
 /**
@@ -19,8 +19,8 @@ import datastructures.map.ChainHashMap;
  */
 public class Collage {
 
-    private LinkedArray.Node<Integer> layers;
-    private final ChainHashMap<Integer, LinkedArray.Node<Integer>> cache;
+    private LinkedSequence.Node<Integer> layers;
+    private final ChainHashMap<Integer, LinkedSequence.Node<Integer>> cache;
 
     /**
      * O(1)
@@ -35,11 +35,11 @@ public class Collage {
      */
     public void importImage(Integer image) {
         if (layers == null) {
-            layers = new LinkedArray.Node<>(image);
+            layers = new LinkedSequence.Node<>(image);
         } else {
             // insert in front of A
             // Create B
-            LinkedArray.Node<Integer> newLayer = new LinkedArray.Node<>(image);
+            LinkedSequence.Node<Integer> newLayer = new LinkedSequence.Node<>(image);
             // B -> A
             newLayer.next = layers;
             // A <- B
@@ -58,7 +58,7 @@ public class Collage {
     public String display() {
         StringBuilder builder = new StringBuilder(cache.size() * 2);
 
-        LinkedArray.Node<Integer> current = layers;
+        LinkedSequence.Node<Integer> current = layers;
         while (current != null) {
             builder.append(current.value);
             current = current.next;
@@ -74,12 +74,12 @@ public class Collage {
      * O(1)???
      */
     public void moveBelow(Integer below, Integer above) {
-        LinkedArray.Node<Integer> belowRef = cache.get(below); // O(1)
+        LinkedSequence.Node<Integer> belowRef = cache.get(below); // O(1)
         if (belowRef == null) {
             return;
         }
 
-        LinkedArray.Node<Integer> aboveRef = cache.get(above); //O(1)
+        LinkedSequence.Node<Integer> aboveRef = cache.get(above); //O(1)
         if (aboveRef == null) {
             return;
         }

@@ -1,6 +1,6 @@
 package datastructures.set;
 
-import datastructures.array.LinkedArray;
+import datastructures.sequence.LinkedSequence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -241,7 +241,7 @@ public class OpenAddressedHashSetTest {
     @MethodSource("outOfOrderArgumentsProvider")
     void testGrowth(Integer[] input) {
         OpenAddressedHashSet<Integer> set = new OpenAddressedHashSet<>();
-        LinkedArray<Integer> allSeen = new LinkedArray<>(input);
+        LinkedSequence<Integer> allSeen = new LinkedSequence<>(input);
 
         for (int i = 0; i < input.length; i++) {
             set.add(i);

@@ -1,6 +1,6 @@
-package datastructures.array;
+package datastructures.sequence;
 
-public interface Array<T> {
+public interface Sequence<T> {
 
     void insertLast(T value);
 
@@ -20,7 +20,7 @@ public interface Array<T> {
 
     T last();
 
-    Array<T> subset(int begin, int end);
+    Sequence<T> subset(int begin, int end);
 
     void set(int i, T value);
 

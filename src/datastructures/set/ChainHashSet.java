@@ -1,6 +1,6 @@
 package datastructures.set;
 
-import datastructures.array.LinkedArray;
+import datastructures.sequence.LinkedSequence;
 
 import java.util.Objects;
 
@@ -60,7 +60,7 @@ public class ChainHashSet<T> implements Set<T> {
     @Override
     public T find(T value) {
         int pos = findHashPosition(value, hashTable);  // O(1)
-        LinkedArray<T> chain = findChain(pos, hashTable);  // O(1)
+        LinkedSequence<T> chain = findChain(pos, hashTable);  // O(1)
 
         for (int i = 0; i < chain.size(); i++) {  // O(10)
             T foundValue = chain.at(i);
@@ -88,7 +88,7 @@ public class ChainHashSet<T> implements Set<T> {
      */
     private boolean add(Object[] hashTable, T value, boolean allowGrowth) {
         int pos = findHashPosition(value, hashTable);
-        LinkedArray<T> chain = findChain(pos, hashTable);
+        LinkedSequence<T> chain = findChain(pos, hashTable);
 
         for (int i = 0; i < chain.size(); i++) {
             if (Objects.equals(value, chain.at(i))) {
@@ -120,7 +120,7 @@ public class ChainHashSet<T> implements Set<T> {
     @Override
     public void delete(T value) {
         int pos = findHashPosition(value, hashTable);
-        LinkedArray<T> chain = findChain(pos, hashTable);
+        LinkedSequence<T> chain = findChain(pos, hashTable);
 
         if (chain.size() == 0) {
             return;
@@ -179,7 +179,7 @@ public class ChainHashSet<T> implements Set<T> {
     @Override
     public T findPrevious(T value) {
         int chainPos = findHashPosition(value, hashTable);
-        LinkedArray<T> chain = findChain(chainPos, hashTable);
+        LinkedSequence<T> chain = findChain(chainPos, hashTable);
 
         boolean found = false;
         // go backwards
@@ -203,7 +203,7 @@ public class ChainHashSet<T> implements Set<T> {
 
         // if it was found but not returned, it's in some previous chain;
         for (int chainIdx = chainPos - 1; chainIdx >= 0; chainIdx--) {
-            LinkedArray<T> nextChain = findChain(chainIdx, hashTable);
+            LinkedSequence<T> nextChain = findChain(chainIdx, hashTable);
             if (nextChain.size() > 0) {
                 return nextChain.last();
             }
@@ -219,7 +219,7 @@ public class ChainHashSet<T> implements Set<T> {
     @Override
     public T findNext(T value) {
         int chainPos = findHashPosition(value, hashTable); //O(1)
-        LinkedArray<T> chain = findChain(chainPos, hashTable); //O(1)
+        LinkedSequence<T> chain = findChain(chainPos, hashTable); //O(1)
 
         boolean found = false;
         for (int i = 0; i < chain.size(); i++) { // O(10)
@@ -242,7 +242,7 @@ public class ChainHashSet<T> implements Set<T> {
 
         // if it was found but not returned, it's in some next chain;
         for (int chainIdx = chainPos + 1; chainIdx < hashTable.length; chainIdx++) { //O(n)
-            LinkedArray<T> nextChain = findChain(chainIdx, hashTable);
+            LinkedSequence<T> nextChain = findChain(chainIdx, hashTable);
             if (nextChain.size() > 0) {
                 return nextChain.first();
             }
@@ -261,12 +261,12 @@ public class ChainHashSet<T> implements Set<T> {
         return hashTable.length;
     }
 
-    private LinkedArray<T> findChain(int pos, Object[] hashTable) {
-        LinkedArray<T> chain;
+    private LinkedSequence<T> findChain(int pos, Object[] hashTable) {
+        LinkedSequence<T> chain;
         if (hashTable[pos] == null) {
-            chain = new LinkedArray<T>();
+            chain = new LinkedSequence<T>();
         } else {
-            chain = (LinkedArray<T>) hashTable[pos];
+            chain = (LinkedSequence<T>) hashTable[pos];
         }
 
         return chain;

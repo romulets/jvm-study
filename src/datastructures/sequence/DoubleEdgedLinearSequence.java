@@ -1,8 +1,8 @@
-package datastructures.array;
+package datastructures.sequence;
 
 import java.util.Arrays;
 
-public class DoubleEdgedLinearArray<T> implements Array<T> {
+public class DoubleEdgedLinearSequence<T> implements Sequence<T> {
 
     private static final int GROWTH_RATIO = 2;
 
@@ -17,7 +17,7 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * O(n)
      */
-    public DoubleEdgedLinearArray(int initialCapacity) {
+    public DoubleEdgedLinearSequence(int initialCapacity) {
         if (initialCapacity < 1) {
             initialCapacity = GROWTH_RATIO * 8;
         }
@@ -33,14 +33,14 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
     /**
      * O(n)
      */
-    public DoubleEdgedLinearArray() {
+    public DoubleEdgedLinearSequence() {
         this(0);
     }
 
     /**
      * O(n)
      */
-    public DoubleEdgedLinearArray(T[] input) {
+    public DoubleEdgedLinearSequence(T[] input) {
         if (input == null) {
             throw new IllegalStateException("Invalid empty or null input array");
         }
@@ -273,8 +273,8 @@ public class DoubleEdgedLinearArray<T> implements Array<T> {
      * @return copy of sub array
      */
     @Override
-    public DoubleEdgedLinearArray<T> subset(int begin, int end) {
-        DoubleEdgedLinearArray<T> copy = new DoubleEdgedLinearArray<>(end - begin);
+    public DoubleEdgedLinearSequence<T> subset(int begin, int end) {
+        DoubleEdgedLinearSequence<T> copy = new DoubleEdgedLinearSequence<>(end - begin);
         for (int i = begin; i < end; i++) {
             copy.insertLast(at(i));
         }

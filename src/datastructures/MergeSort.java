@@ -1,6 +1,6 @@
 package datastructures;
 
-import datastructures.array.Array;
+import datastructures.sequence.Sequence;
 
 import java.util.Arrays;
 
@@ -15,45 +15,45 @@ public class MergeSort {
      * (k=2) and grows on factor of 2 until
      * everything is merged.
      */
-    public static <T extends Comparable<T>> void sort(Array<T> array) {
-        if (array == null || array.size() < 2) {
+    public static <T extends Comparable<T>> void sort(Sequence<T> sequence) {
+        if (sequence == null || sequence.size() < 2) {
             return;
         }
 
         int chunkSize = 1;
         int i = 0;
 
-        while (i < array.size()) {
+        while (i < sequence.size()) {
             int list1Begin = i;
-            int list1End = Math.min(list1Begin + chunkSize, array.size());
+            int list1End = Math.min(list1Begin + chunkSize, sequence.size());
             int list2Begin = i + chunkSize;
-            int list2End = Math.min(list2Begin + chunkSize, array.size());
+            int list2End = Math.min(list2Begin + chunkSize, sequence.size());
 
-            if (list2Begin < array.size()) {
-                Array<T> firstHalf = array.subset(list1Begin, list1End);    // O(n)
-                Array<T> secondHalf = array.subset(list2Begin, list2End);   // O(n)
+            if (list2Begin < sequence.size()) {
+                Sequence<T> firstHalf = sequence.subset(list1Begin, list1End);    // O(n)
+                Sequence<T> secondHalf = sequence.subset(list2Begin, list2End);   // O(n)
 
                 int ptr1 = 0;
                 int ptr2 = 0;
                 for (int actualPos = list1Begin; actualPos < list2End; actualPos++) { // O(chunkSize * 2) -> O(n)
                     if (ptr1 == firstHalf.size()) { // we exhausted firstHalf already
-                        array.set(actualPos, secondHalf.at(ptr2)); // set pt2;
+                        sequence.set(actualPos, secondHalf.at(ptr2)); // set pt2;
                         ptr2++;
                         continue;
                     }
 
                     if (ptr2 == secondHalf.size()) { // we exhausted secondHalf already
-                        array.set(actualPos, firstHalf.at(ptr1)); // set pt1;
+                        sequence.set(actualPos, firstHalf.at(ptr1)); // set pt1;
                         ptr1++;
                         continue;
                     }
 
                     // If ptr1 is larger than pt2
                     if (firstHalf.at(ptr1).compareTo(secondHalf.at(ptr2)) > 0) {
-                        array.set(actualPos, secondHalf.at(ptr2)); // set pt2;
+                        sequence.set(actualPos, secondHalf.at(ptr2)); // set pt2;
                         ptr2++;
                     } else {
-                        array.set(actualPos, firstHalf.at(ptr1)); // set pt1;
+                        sequence.set(actualPos, firstHalf.at(ptr1)); // set pt1;
                         ptr1++;
                     }
                 }
@@ -63,7 +63,7 @@ public class MergeSort {
             // If we are about to finish the loop (i + chunkSize * 2 > array.length)
             // And we have not yet merged the whole array
             // Reset i and increase chunk size
-            if (i + chunkSize * 2 >= array.size() && chunkSize * 2 < array.size()) {
+            if (i + chunkSize * 2 >= sequence.size() && chunkSize * 2 < sequence.size()) {
                 i = 0;
                 chunkSize *= 2;
             } else {

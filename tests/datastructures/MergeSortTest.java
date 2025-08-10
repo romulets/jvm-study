@@ -1,6 +1,6 @@
 package datastructures;
 
-import datastructures.array.DoubleEdgedLinearArray;
+import datastructures.sequence.DoubleEdgedLinearSequence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -61,7 +61,7 @@ public class MergeSortTest {
     @ParameterizedTest()
     @MethodSource("outOfOrderArgumentsProvider")
     public void sort_doubleEdgedLinearArray_many(Integer[] input) {
-        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(input.length * 2);
+        DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(input.length * 2);
         for (Integer i : input) {
             array.insertLast(i);
         }

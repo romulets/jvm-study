@@ -1,7 +1,5 @@
-package datastructures.array;
+package datastructures.sequence;
 
-import datastructures.array.Array;
-import datastructures.array.DoubleEdgedLinearArray;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -12,11 +10,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DoubleEdgedLinearArrayTest {
+class DoubleEdgedLinearSequenceTest {
 
     @Test
     void constructDoubleEdgedLinearArray() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(5);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(5);
 
         assertEquals(array.array.length, 5);
         assertEquals(array.size(), 0);
@@ -27,7 +25,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void constructDoubleEdgedLinearArray_withArray() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(new String[]{"a", "b", "c"});
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(new String[]{"a", "b", "c"});
 
         array.insertLast("d");
         array.insertFirst("z");
@@ -48,7 +46,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertFirst_singular() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(5);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(5);
         array.insertFirst("test");
 
 //        System.out.println(Arrays.toString(array.array));
@@ -63,7 +61,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertFirst_initialCapacity_1() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(1);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(1);
         array.insertFirst("test");
         array.insertFirst("test");
         array.insertFirst("test");
@@ -83,7 +81,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertLast_initialCapacity_1() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(1);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(1);
         array.insertLast("test");
         array.insertLast("test");
         array.insertLast("test");
@@ -103,7 +101,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertFirst_double() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(5);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(5);
         array.insertFirst("test-1");
         array.insertFirst("test-2");
 
@@ -120,7 +118,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertFirst_overflow() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(5);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(5);
         array.insertFirst("test-1");
         array.insertFirst("test-2");
         array.insertFirst("test-3");
@@ -141,7 +139,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertFirst_quadrupleOverflow() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(2);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(2);
         for (int i = 0; i < 10; i++) {
             array.insertFirst("test-" + i);
         }
@@ -160,7 +158,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertLast_singular() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(6);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(6);
         array.insertLast("test");
 
 //        System.out.println(Arrays.toString(array.array));
@@ -175,7 +173,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertLast_double() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(6);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(6);
         array.insertLast("test-1");
         array.insertLast("test-2");
 
@@ -192,7 +190,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertLast_tippleOverflow() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(2);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(2);
         for (int i = 0; i < 10; i++) {
             array.insertLast("test-" + i);
         }
@@ -211,7 +209,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void deleteLast_afterFirst() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(9);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(9);
         array.insertFirst("last");
         String last = array.deleteLast();
 
@@ -227,7 +225,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void deleteLast_afterTwoFirst() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(9);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(9);
         array.insertFirst("last");
         array.insertFirst("first");
         String last = array.deleteLast();
@@ -244,7 +242,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void deleteLast_afterFirstLast() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(9);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(9);
         array.insertFirst("first");
         array.insertLast("last");
         String last = array.deleteLast();
@@ -261,7 +259,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void deleteLast_growThenShrink() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(4);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(4);
         for (int i = 0; i < 16; i++) {
             array.insertFirst("t" + i);
         }
@@ -298,7 +296,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void deleteFirst_growThenShrink() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(4);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(4);
         for (int i = 0; i < 32; i++) {
             array.insertLast("t" + i);
         }
@@ -332,13 +330,13 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertAt_beyondEnd() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(2);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(2);
         assertThrows(IndexOutOfBoundsException.class, () -> array.insertAt(1, "should fail"));
     }
 
     @Test
     void insertAt_beginning() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(2);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(2);
         array.insertAt(0, "first");
 
         assertEquals(array.array.length, 4);
@@ -351,7 +349,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertAt_multiple() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(2);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(2);
         array.insertAt(0, "first");
         array.insertAt(1, "second");
         array.insertAt(2, "third");
@@ -373,7 +371,7 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void insertAt_middle() {
-        DoubleEdgedLinearArray<String> array = new DoubleEdgedLinearArray<>(2);
+        DoubleEdgedLinearSequence<String> array = new DoubleEdgedLinearSequence<>(2);
         array.insertAt(0, "first");
         array.insertAt(1, "second");
         array.insertAt(2, "fourth");
@@ -397,18 +395,18 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void deleteAt_invalidIndex() {
-        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(new Integer[]{1,2,3});
+        DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(new Integer[]{1,2,3});
         assertThrows(IndexOutOfBoundsException.class, () -> array.deleteAt(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> array.deleteAt(3));
 
-        DoubleEdgedLinearArray<Integer> empty = new DoubleEdgedLinearArray<>();
+        DoubleEdgedLinearSequence<Integer> empty = new DoubleEdgedLinearSequence<>();
         assertThrows(IndexOutOfBoundsException.class, () -> empty.deleteAt(0));
         assertThrows(IndexOutOfBoundsException.class, () -> empty.deleteAt(1));
     }
 
     @Test
     void deleteAt() {
-        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(new Integer[]{1,2,3,4,5});
+        DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(new Integer[]{1,2,3,4,5});
 
         assertEquals(array.deleteAt(0), 1);
         assertEquals(array.array.length, 5);
@@ -448,11 +446,11 @@ class DoubleEdgedLinearArrayTest {
 
     @Test
     void subset() {
-        Array<Integer> array = new DoubleEdgedLinearArray<>(new Integer[]{0,1,2,3,4});
+        Sequence<Integer> sequence = new DoubleEdgedLinearSequence<>(new Integer[]{0,1,2,3,4});
 
-        for (int i = 0; i < array.size(); i++) {
-            for(int j = array.size() - 1; j >= i; j--) {
-                Array<Integer> subset = array.subset(i,j);
+        for (int i = 0; i < sequence.size(); i++) {
+            for(int j = sequence.size() - 1; j >= i; j--) {
+                Sequence<Integer> subset = sequence.subset(i,j);
                 assertEquals(subset.size(), j - i);
                 for (int d = 0; d < j - i; d++) {
                     assertEquals(subset.at(d), d + i);
@@ -470,7 +468,7 @@ class DoubleEdgedLinearArrayTest {
         int initialCapacity = (int) (Math.random() * 20) + 1;
 //        System.out.println("Initial size: " + initialCapacity);
 
-        DoubleEdgedLinearArray<Integer> array = new DoubleEdgedLinearArray<>(initialCapacity);
+        DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(initialCapacity);
         for (Integer i : input) {
             if (Math.random() % 2 == 0) {
                 array.insertLast(i);
@@ -495,7 +493,7 @@ class DoubleEdgedLinearArrayTest {
 
     }
 
-    private static void assertCapacityIsCorrect(DoubleEdgedLinearArray<?> array, int initialCapacity) {
+    private static void assertCapacityIsCorrect(DoubleEdgedLinearSequence<?> array, int initialCapacity) {
         // We are always keeping space, so how many times should the initial capacity be grown?
         double timesNeededToFit = Math.ceilDiv(array.size() * 2, initialCapacity);
         // Normalize to the growth rate, take log base 2 of the times needed to fit
