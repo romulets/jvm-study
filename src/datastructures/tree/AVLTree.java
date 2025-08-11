@@ -64,33 +64,45 @@ class AVLTree<T> {
     }
 
     /**
-     * O(1)
+     * O(log(n))
      *
      * @return new root
      */
     private AVLTree<T> balanceHeight() {
-        int heightSkew = getHeightSkew();
+        int heightSkew = heightSkew();
         if (Math.abs(heightSkew) <= 1) { // within good boundaries
             return this;
         }
-        System.out.println("----------- BEFORE ------------");
-        System.out.println(this.treeDiagram());
 
         AVLTree<T> newRoot;
         if (heightSkew > 1) {
-            newRoot = rotateRight();
-        } else {
+            // right is taller than left
+            if (right.heightSkew() < 0) {
+                // skew of right is -1
+                right.rotateRight();
+            }
             newRoot = rotateLeft();
+        } else {
+            // left is taller than right
+            if (left.heightSkew() > 0) {
+                // skew of left is 1
+                left.rotateLeft();
+            }
+            newRoot = rotateRight();
         }
 
-        System.out.println("----------- AFTER ------------");
-        System.out.println(newRoot.treeDiagram());
+        // update all parents
+        AVLTree<T> parent = newRoot.parent;
+        while (parent != null) {
+            parent.updateComputedProperties();
+            parent = parent.parent;
+        }
 
         return newRoot;
     }
 
-    private int getHeightSkew() {
-        return height(left) - height(right);
+    private int heightSkew() {
+        return height(right) - height(left);
     }
 
     /**
@@ -119,7 +131,11 @@ class AVLTree<T> {
 
         if (unchangedParent != null) {
             // points to the newRoot
-            unchangedParent.left = newRoot;
+            if (unchangedParent.right == this) {
+                unchangedParent.right = newRoot;
+            } else {
+                unchangedParent.left = newRoot;
+            }
         }
 
         newRightChild.updateComputedProperties();
@@ -138,7 +154,7 @@ class AVLTree<T> {
         AVLTree<T> unchangedParent = this.parent;
         AVLTree<T> newRoot = this.right;
         AVLTree<T> newLeftChild = this;
-        AVLTree<T> rotatedChild = newRoot.left;
+        AVLTree<T> rotatedChild = newRoot.left; // null
 
         // becomes parent
         newRoot.left = newLeftChild;
@@ -155,9 +171,12 @@ class AVLTree<T> {
 
         if (unchangedParent != null) {
             // points to the newRoot
-            unchangedParent.right = newRoot;
+            if (unchangedParent.right == this) {
+                unchangedParent.right = newRoot;
+            } else {
+                unchangedParent.left = newRoot;
+            }
         }
-
 
         newLeftChild.updateComputedProperties();
         newRoot.updateComputedProperties();
@@ -185,16 +204,18 @@ class AVLTree<T> {
 
             // walk up parents updating computed properties
             AVLTree<T> parent = this.parent;
-            while (parent.parent != null) {
+            AVLTree<T> lastParent = this.parent;
+            while (parent != null) {
                 parent.updateComputedProperties();
                 parent = parent.balanceHeight();
+                lastParent = parent;
                 parent = parent.parent;
             }
-            parent.updateComputedProperties();
-            return parent;
+
+            return lastParent;
         }
 
-        return this;
+        throw new IllegalStateException("NOT IMPLEMENTED NON LEAF DELETION");
     }
 
     /**
@@ -401,7 +422,7 @@ class AVLTree<T> {
             leftDiagram = Arrays.stream(leftDiagram.split("\\n"))
                     .map(l -> {
                         if (l.charAt(0) == '<') {
-                            return "├─ l" + l;
+                            return "├─ " + l + " # left";
                         }
                         return "├─ " + l;
                     })
@@ -414,7 +435,7 @@ class AVLTree<T> {
             rightDiagram = Arrays.stream(rightDiagram.split("\\n"))
                     .map(l -> {
                         if (l.charAt(0) == '<') {
-                            return "├─ r" + l;
+                            return "├─ " + l + " # right";
                         }
                         return "├─ " + l;
                     })
