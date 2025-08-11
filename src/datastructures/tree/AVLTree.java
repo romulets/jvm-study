@@ -1,5 +1,6 @@
 package datastructures.tree;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -190,32 +191,52 @@ class AVLTree<T> {
      *
      * @return new root
      */
-    public AVLTree<T> delete() {
-        if (isLeaf() && parent == null) {
-            return null; // no new parent, it's completely null
-        }
-
+    public AVLTree<T> deleteNode() {
         if (isLeaf()) {
-            if (this.parent.left == this) {
-                this.parent.left = null;
-            } else if (this.parent.right == this) {
-                this.parent.right = null;
-            }
-
-            // walk up parents updating computed properties
-            AVLTree<T> parent = this.parent;
-            AVLTree<T> lastParent = this.parent;
-            while (parent != null) {
-                parent.updateComputedProperties();
-                parent = parent.balanceHeight();
-                lastParent = parent;
-                parent = parent.parent;
-            }
-
-            return lastParent;
+            return deleteLeaf();
         }
 
-        throw new IllegalStateException("NOT IMPLEMENTED NON LEAF DELETION");
+        AVLTree<T> toBeDeleted = this;
+        while (!toBeDeleted.isLeaf()) {
+            // find swap
+            AVLTree<T> toBeSwapped = toBeDeleted.next();
+            if (toBeSwapped == null) {
+                toBeSwapped = toBeDeleted.previous();
+            }
+
+            // Swap values
+            T tmpValue = toBeSwapped.value();
+            toBeSwapped.value = toBeDeleted.value;
+            toBeDeleted.value = tmpValue;
+            // go next!
+            toBeDeleted = toBeSwapped;
+        }
+
+        return toBeDeleted.deleteLeaf();
+    }
+
+    private AVLTree<T> deleteLeaf() {
+        if (parent == null) {
+            return null;
+        }
+
+        if (this.parent.left == this) {
+            this.parent.left = null;
+        } else if (this.parent.right == this) {
+            this.parent.right = null;
+        }
+
+        // walk up parents updating computed properties
+        AVLTree<T> parent = this.parent;
+        AVLTree<T> lastParent = this.parent;
+        while (parent != null) {
+            parent.updateComputedProperties();
+            parent = parent.balanceHeight();
+            lastParent = parent;
+            parent = parent.parent;
+        }
+
+        return lastParent;
     }
 
     /**
@@ -355,6 +376,22 @@ class AVLTree<T> {
     /**
      * O(n)
      */
+    public AVLTree<T> transversalOrderAt(int pos) {
+        if (pos < 0 || pos >= size) {
+            throw new IllegalArgumentException("Can't access node " + pos + " in a tree of size pos");
+        }
+
+        AVLTree<T> atPos = this.first();
+        for (int i = 0; i < pos; i++) {
+            atPos = atPos.next();
+        }
+
+        return atPos;
+    }
+
+    /**
+     * O(n)
+     */
     public AVLTree<T> previous() {
         /*
         EXAMPLE TO REASON ABOUT
@@ -441,7 +478,6 @@ class AVLTree<T> {
                     })
                     .collect(Collectors.joining("\n"));
         }
-
 
 
         StringBuilder builder = new StringBuilder(

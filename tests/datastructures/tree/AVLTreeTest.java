@@ -16,7 +16,6 @@ class AVLTreeTest {
     @Test
     void insertFirst() {
         AVLTree<Character> tree = new AVLTree<>('a');
-
         tree = tree.insertFirst('b');
         tree = tree.insertFirst('c');
         tree = tree.insertFirst('d');
@@ -30,35 +29,27 @@ class AVLTreeTest {
         tree = tree.insertFirst('m');
         tree = tree.insertFirst('n');
 
-        assertEquals("n,m,l,k,j,i,h,g,f,d,c,b,a", tree.transversalOrder());
-        assertEquals(13, tree.size());
-        assertEquals(4, tree.height());
+        assertTreeHasOrderAndProps(tree, "n,m,l,k,j,i,h,g,f,d,c,b,a", 13, 4);
     }
 
     @Test
     void testRightRotation() {
         AVLTree<Character> tree = new AVLTree<>('a');
-
         tree = tree.insertFirst('b');
         tree = tree.insertFirst('c');
 
 
-        assertEquals("c,b,a", tree.transversalOrder());
-        assertEquals(3, tree.size());
-        assertEquals(2, tree.height());
+        assertTreeHasOrderAndProps(tree, "c,b,a", 3, 2);
     }
 
     @Test
     void testLeftRotation() {
         AVLTree<Character> tree = new AVLTree<>('a');
-
         tree = tree.insertLast('b');
         tree = tree.insertLast('c');
 
 
-        assertEquals("a,b,c", tree.transversalOrder());
-        assertEquals(3, tree.size());
-        assertEquals(2, tree.height());
+        assertTreeHasOrderAndProps(tree, "a,b,c", 3, 2);
     }
 
     @Test
@@ -70,24 +61,18 @@ class AVLTreeTest {
         tree = tree.insertLast('e');
         tree = tree.insertLast('f');
 
-        assertEquals("a,b,c,d,e,f", tree.transversalOrder());
-        assertEquals(6, tree.size());
-        assertEquals(3, tree.height());
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f", 6, 3);
+        tree = tree.first().deleteNode(); // delete a
+        tree = tree.last().deleteNode(); // delete f
+        tree = tree.last().deleteNode(); // delete e
 
-        tree = tree.first().delete(); // delete a
-        tree = tree.last().delete(); // delete f
-        tree = tree.last().delete(); // delete e
-
-        assertEquals("b,c,d", tree.transversalOrder());
-        assertEquals(3, tree.size());
-        assertEquals(2, tree.height());
+        assertTreeHasOrderAndProps(tree, "b,c,d", 3, 2);
     }
 
 
     @Test
     void insertLast() {
         AVLTree<Character> tree = new AVLTree<>('a');
-
         tree = tree.insertLast('b');
         tree = tree.insertLast('c');
         tree = tree.insertLast('d');
@@ -101,16 +86,13 @@ class AVLTreeTest {
         tree = tree.insertLast('m');
         tree = tree.insertLast('n');
 
-        assertEquals("a,b,c,d,f,g,h,i,j,k,l,m,n", tree.transversalOrder());
-        assertEquals(13, tree.size());
-        assertEquals(4, tree.height());
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,f,g,h,i,j,k,l,m,n", 13, 4);
     }
 
     @Test
     void testFirst() {
         AVLTree<Character> tree = new AVLTree<>('a');
         assertEquals('a', tree.first().value());
-
         tree = tree.insertFirst('b');
         assertEquals('b', tree.first().value());
         tree = tree.insertFirst('c');
@@ -141,7 +123,6 @@ class AVLTreeTest {
     @Test
     void testNext() {
         AVLTree<Character> tree = new AVLTree<>('a');
-
         tree = tree.insertLast('b');
         tree = tree.insertLast('c');
         tree = tree.insertLast('d');
@@ -171,7 +152,6 @@ class AVLTreeTest {
     @Test
     void testPrevious() {
         AVLTree<Character> tree = new AVLTree<>('a');
-
         tree = tree.insertFirst('b');
         tree = tree.insertFirst('c');
         tree = tree.insertFirst('d');
@@ -209,7 +189,6 @@ class AVLTreeTest {
     @Test
     void testDeleteLeaf() {
         AVLTree<Character> tree = new AVLTree<>('a');
-
         tree = tree.insertLast('b');
         tree = tree.insertLast('c');
         tree = tree.insertLast('d');
@@ -224,78 +203,104 @@ class AVLTreeTest {
         tree = tree.insertLast('m');
         tree = tree.insertLast('n');
 
-        AVLTree<Character> aNode = tree.first();
-        tree = aNode.delete();
-        assertEquals("b,c,d,e,f,g,h,i,j,k,l,m,n", tree.transversalOrder());
-        assertEquals(13, tree.size());
-        assertEquals(4, tree.height());
+        tree = tree.first().deleteNode(); // delete a
+        assertTreeHasOrderAndProps(tree, "b,c,d,e,f,g,h,i,j,k,l,m,n", 13, 4);
+        tree = tree.transversalOrderAt(5).deleteNode(); // delete g
+        assertTreeHasOrderAndProps(tree, "b,c,d,e,f,h,i,j,k,l,m,n", 12, 4);
+        tree = tree.first().next().deleteNode(); // delete c
+        assertTreeHasOrderAndProps(tree, "b,d,e,f,h,i,j,k,l,m,n", 11, 4);
+        tree = tree.first().deleteNode(); // delete b
+        assertTreeHasOrderAndProps(tree, "d,e,f,h,i,j,k,l,m,n", 10, 4);
+        tree = tree.last().deleteNode(); // delete n
+        assertTreeHasOrderAndProps(tree, "d,e,f,h,i,j,k,l,m", 9, 4);
+        tree = tree.last().deleteNode(); // delete m
+        assertTreeHasOrderAndProps(tree, "d,e,f,h,i,j,k,l", 8, 4);
+        tree = tree.transversalOrderAt(2).deleteNode(); // delete f
+        assertTreeHasOrderAndProps(tree, "d,e,h,i,j,k,l", 7, 4);
+        tree = tree.first().deleteNode(); // delete d
+        assertTreeHasOrderAndProps(tree, "e,h,i,j,k,l", 6, 3);
+        tree = tree.last().previous().deleteNode(); // delete k
+        assertTreeHasOrderAndProps(tree, "e,h,i,j,l", 5, 3);
+        tree = tree.first().deleteNode(); // delete e
+        assertTreeHasOrderAndProps(tree, "h,i,j,l", 4, 3);
+        tree = tree.first().next().deleteNode(); // delete i
+        assertTreeHasOrderAndProps(tree, "h,j,l", 3, 2);
+        tree = tree.first().deleteNode(); // delete h
+        assertTreeHasOrderAndProps(tree, "j,l", 2, 2);
+        tree = tree.last().deleteNode(); // delete l
+        assertTreeHasOrderAndProps(tree, "j", 1, 1);
+        tree = tree.deleteNode();
+        assertNull(tree);
+    }
 
-        AVLTree<Character> gNode = tree.first().next().next().next().next().next();
-        tree = gNode.delete();
-        assertEquals("b,c,d,e,f,h,i,j,k,l,m,n", tree.transversalOrder());
-        assertEquals(12, tree.size());
-        assertEquals(4, tree.height());
+    @Test
+    void testDeleteHead() {
+        AVLTree<Character> tree = new AVLTree<>('a');
+        tree = tree.insertLast('b');
+        tree = tree.insertLast('c');
+        tree = tree.insertLast('d');
+        tree = tree.insertLast('e');
+        tree = tree.insertLast('f');
 
-        AVLTree<Character> cNode = tree.first().next();
-        tree = cNode.delete();
-        assertEquals("b,d,e,f,h,i,j,k,l,m,n", tree.transversalOrder());
-        assertEquals(11, tree.size());
-        assertEquals(4, tree.height());
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f", 6, 3);
 
-        //  should balance height!
-        AVLTree<Character> bNode = tree.first();
-        tree = bNode.delete();
-        assertEquals("d,e,f,h,i,j,k,l,m,n", tree.transversalOrder());
-        assertEquals(10, tree.size());
-        assertEquals(4, tree.height());
+        // delete head
+        tree = tree.deleteNode();
 
-        AVLTree<Character> nNode = tree.last();
-        tree = nNode.delete();
-        assertEquals("d,e,f,h,i,j,k,l,m", tree.transversalOrder());
-        assertEquals(9, tree.size());
-        assertEquals(4, tree.height());
+        assertTreeHasOrderAndProps(tree, "a,b,c,e,f", 5, 3);
+    }
 
-        AVLTree<Character> mNode = tree.last();
-        tree = mNode.delete();
-        assertEquals("d,e,f,h,i,j,k,l", tree.transversalOrder());
-        assertEquals(8, tree.size());
-        assertEquals(4, tree.height());
+    @Test
+    void testDeleteMultiple() {
+        AVLTree<Character> tree = new AVLTree<>('a');
+        tree = tree.insertLast('b');
+        tree = tree.insertLast('c');
+        tree = tree.insertLast('d');
+        tree = tree.insertLast('e');
+        tree = tree.insertLast('f');
+        tree = tree.insertLast('g');
+        tree = tree.insertLast('h');
+        tree = tree.insertLast('i');
+        tree = tree.insertLast('j');
+        tree = tree.insertLast('k');
+        tree = tree.insertLast('l');
+        tree = tree.insertLast('m');
+        tree = tree.insertLast('n');
 
-        AVLTree<Character> fNode = tree.first().next().next();
-        tree = fNode.delete();
-        assertEquals("d,e,h,i,j,k,l", tree.transversalOrder());
-        assertEquals(7, tree.size());
-        assertEquals(4, tree.height());
+        tree = tree.deleteNode(); // deleting H
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f,g,i,j,k,l,m,n", 13, 4);
+        tree = tree.transversalOrderAt(10).deleteNode(); // deleting L
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f,g,i,j,k,m,n", 12, 4);
+        tree = tree.transversalOrderAt(10).deleteNode(); // deleting M
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f,g,i,j,k,n", 11, 4);
+        tree = tree.transversalOrderAt(9).deleteNode(); // deleting K
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f,g,i,j,n", 10, 4);
+        tree = tree.last().deleteNode(); // deleting N
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f,g,i,j", 9, 4);
+        tree = tree.last().deleteNode(); // deleting J
+        assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f,g,i", 8, 4);
+        tree = tree.deleteNode(); // deleting D
+        assertTreeHasOrderAndProps(tree, "a,b,c,e,f,g,i", 7, 3);
+        tree = tree.deleteNode(); // deleting E
+        assertTreeHasOrderAndProps(tree, "a,b,c,f,g,i", 6, 3);
+        tree = tree.deleteNode(); // deleting F
+        assertTreeHasOrderAndProps(tree, "a,b,c,g,i", 5, 3);
+        tree = tree.deleteNode(); // deleting g
+        assertTreeHasOrderAndProps(tree, "a,b,c,i", 4, 3);
+        tree = tree.deleteNode(); // deleting b
+        assertTreeHasOrderAndProps(tree, "a,c,i", 3, 2);
+        tree = tree.deleteNode(); // deleting c
+        assertTreeHasOrderAndProps(tree, "a,i", 2, 2);
+        tree = tree.deleteNode(); // deleting i
+        assertTreeHasOrderAndProps(tree, "a", 1, 1);
+        tree = tree.deleteNode(); // deleting a
+        assertNull(tree);
+    }
 
-        AVLTree<Character> dNode = tree.first();
-        tree = dNode.delete();
-        assertEquals("e,h,i,j,k,l", tree.transversalOrder());
-        assertEquals(6, tree.size());
-        assertEquals(3, tree.height());
-
-        AVLTree<Character> kNode = tree.last().previous();
-        tree = kNode.delete();
-        assertEquals("e,h,i,j,l", tree.transversalOrder());
-        assertEquals(5, tree.size());
-        assertEquals(3, tree.height());
-
-        AVLTree<Character> eNode = tree.first();
-        tree = eNode.delete();
-        assertEquals("h,i,j,l", tree.transversalOrder());
-        assertEquals(4, tree.size());
-        assertEquals(3, tree.height());
-
-        AVLTree<Character> iNode = tree.first().next();
-        tree = iNode.delete();
-        assertEquals("h,j,l", tree.transversalOrder());
-        assertEquals(3, tree.size());
-        assertEquals(2, tree.height());
-
-        AVLTree<Character> hNode = tree.first();
-        tree = hNode.delete();
-        assertEquals("j,l", tree.transversalOrder());
-        assertEquals(2, tree.size());
-        assertEquals(2, tree.height());
+    private static void assertTreeHasOrderAndProps(AVLTree<Character> tree, String transversalOrder, int size, int height) {
+        assertEquals(transversalOrder, tree.transversalOrder());
+        assertEquals(size, tree.size());
+        assertEquals(height, tree.height());
     }
 
 }
