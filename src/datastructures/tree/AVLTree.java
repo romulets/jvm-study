@@ -1,9 +1,5 @@
 package datastructures.tree;
 
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 /**
  * Keeps height balanced
  * Does not guarantee order
@@ -242,7 +238,7 @@ class AVLTree<T> {
     /**
      * O(1)
      */
-    private boolean isLeaf() {
+    boolean isLeaf() {
         return size == 1;
     }
 
@@ -435,7 +431,6 @@ class AVLTree<T> {
         return parentLadder;
     }
 
-
     /**
      * O(n)
      */
@@ -444,57 +439,11 @@ class AVLTree<T> {
         return "<" + this.value + " (s:" + size + " h: " + height + ")>";
     }
 
-    /**
-     * O(n) not optimized at all, and ugly. Just aids development
-     */
-    public String treeDiagram() {
-        String thisDiagram = toString();
-        if (isLeaf()) {
-            return thisDiagram; // early return if there are no children
-        }
+    public AVLTree<T> left() {
+        return left;
+    }
 
-        String leftDiagram = "";
-        if (this.left != null) {
-            leftDiagram = this.left.treeDiagram();
-            leftDiagram = Arrays.stream(leftDiagram.split("\\n"))
-                    .map(l -> {
-                        if (l.charAt(0) == '<') {
-                            return "├─ " + l + " # left";
-                        }
-                        return "├─ " + l;
-                    })
-                    .collect(Collectors.joining("\n"));
-        }
-
-        String rightDiagram = "";
-        if (this.right != null) {
-            rightDiagram = this.right.treeDiagram();
-            rightDiagram = Arrays.stream(rightDiagram.split("\\n"))
-                    .map(l -> {
-                        if (l.charAt(0) == '<') {
-                            return "├─ " + l + " # right";
-                        }
-                        return "├─ " + l;
-                    })
-                    .collect(Collectors.joining("\n"));
-        }
-
-
-        StringBuilder builder = new StringBuilder(
-                this.size() + (leftDiagram.length()) + (rightDiagram.length())
-        );
-
-        builder.append(thisDiagram);
-        builder.append("\n");
-        if (this.left != null) {
-            builder.append(leftDiagram);
-            builder.append("\n");
-        }
-        if (this.right != null) {
-            builder.append(rightDiagram);
-            builder.append("\n");
-        }
-
-        return builder.toString();
+    public AVLTree<T> right() {
+        return right;
     }
 }

@@ -2,6 +2,7 @@ package datastructures.tree;
 
 import org.junit.jupiter.api.Test;
 
+import static datastructures.tree.AVLTreePrint.treeDiagram;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AVLTreeTest {
@@ -266,6 +267,8 @@ class AVLTreeTest {
         tree = tree.insertLast('l');
         tree = tree.insertLast('m');
         tree = tree.insertLast('n');
+
+        System.out.println(treeDiagram(tree));
 
         tree = tree.deleteNode(); // deleting H
         assertTreeHasOrderAndProps(tree, "a,b,c,d,e,f,g,i,j,k,l,m,n", 13, 4);
