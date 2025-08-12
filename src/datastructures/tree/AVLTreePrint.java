@@ -55,4 +55,8 @@ public class AVLTreePrint {
 
         return builder.toString();
     }
+
+    static public <T> void printTree(AVLTree<T> tree) {
+        System.out.println(treeDiagram(tree));
+    }
 }

@@ -6,7 +6,7 @@ package datastructures.tree;
  *
  * @param <T>
  */
-class AVLTree<T> {
+public class AVLTree<T> {
     private T value;
     private AVLTree<T> parent;
     private AVLTree<T> left;
@@ -53,6 +53,33 @@ class AVLTree<T> {
 
         updateComputedProperties();
         return balanceHeight();
+    }
+
+    public AVLTree<T> insertNodeAfter(T value) {
+        if (this.right == null) {
+            this.right = new AVLTree<>(value);
+        } else {
+            AVLTree<T> tmp = this.right;
+            this.right = new AVLTree<>(value);
+            this.right.right = tmp;
+            this.right.right.parent = this.right;
+            this.right.updateComputedProperties();
+        }
+
+        this.right.parent = this;
+
+        // return parent
+        AVLTree<T> parent = balanceHeight();
+        AVLTree<T> previousParent = parent;
+        while (parent != null) {
+            // doing for each parent to make sure we are balanced after insertion
+            parent = parent.balanceHeight();
+            parent.updateComputedProperties();
+            previousParent = parent;
+            parent = parent.parent;
+        }
+
+        return previousParent;
     }
 
     private void updateComputedProperties() {

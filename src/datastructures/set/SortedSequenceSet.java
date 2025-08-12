@@ -6,28 +6,28 @@ import datastructures.MergeSort;
 import datastructures.sequence.Sequence;
 import datastructures.sequence.DoubleEdgedLinearSequence;
 
-public class SortedArraySet<T extends Comparable<T>> implements Set<T> {
+public class SortedSequenceSet<T extends Comparable<T>> implements Set<T> {
 
     private final Sequence<T> sequence;
 
     /**
      * O(1)
      */
-    public SortedArraySet() {
+    public SortedSequenceSet() {
         sequence = new DoubleEdgedLinearSequence<>();
     }
 
     /**
      * O(1)
      */
-    public SortedArraySet(int initialCapacity) {
+    public SortedSequenceSet(int initialCapacity) {
         sequence = new DoubleEdgedLinearSequence<>(initialCapacity);
     }
 
     /**
      * O(n*log(n))
      */
-    public SortedArraySet(T[] values) {
+    public SortedSequenceSet(T[] values) {
         sequence = new DoubleEdgedLinearSequence<>(values);
         MergeSort.sort(sequence);
     }

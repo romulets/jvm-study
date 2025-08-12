@@ -12,67 +12,12 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OpenAddressedHashSetTest {
+public class OpenAddressedHashSetTest extends SetTestCases {
 
-    @Test
-    void find() {
-        OpenAddressedHashSet<String> set = new OpenAddressedHashSet<>(new String[]{"b", "d", "a", "c"});
-
-        assertTrue(set.contains("a"));
-        assertTrue(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertTrue(set.contains("d"));
-        assertFalse(set.contains("e"));
-        assertEquals(set.size(), 4);
+    protected OpenAddressedHashSetTest() {
+        super(OpenAddressedHashSet::new, OpenAddressedHashSet::new, OpenAddressedHashSet::new);
     }
 
-
-    @Test
-    void add() {
-        OpenAddressedHashSet<String> set = new OpenAddressedHashSet<>(5);
-
-        set.add("d");
-        set.add("d");
-        set.add("d");
-        set.add("d");
-        assertTrue(set.contains("d"));
-        assertEquals(set.size(), 1);
-
-        set.add("a");
-        assertTrue(set.contains("a"));
-        assertTrue(set.contains("d"));
-        assertEquals(set.size(), 2);
-
-        set.add("c");
-        assertTrue(set.contains("a"));
-        assertTrue(set.contains("c"));
-        assertTrue(set.contains("d"));
-        assertEquals(set.size(), 3);
-
-        set.add("b");
-        assertTrue(set.contains("a"));
-        assertTrue(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertTrue(set.contains("d"));
-        assertEquals(set.size(), 4);
-
-        set.add("f");
-        assertTrue(set.contains("a"));
-        assertTrue(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertTrue(set.contains("d"));
-        assertTrue(set.contains("f"));
-        assertEquals(set.size(), 5);
-
-        set.add("e");
-        assertTrue(set.contains("a"));
-        assertTrue(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertTrue(set.contains("d"));
-        assertTrue(set.contains("e"));
-        assertTrue(set.contains("f"));
-        assertEquals(set.size(), 6);
-    }
 
     @Test
     void add_growth() {
@@ -96,75 +41,6 @@ public class OpenAddressedHashSetTest {
 
     }
 
-
-    @Test
-    void delete() {
-        OpenAddressedHashSet<String> set = new OpenAddressedHashSet<>(new String[]{"b", "d", "a", "c", "f", "e"});
-        assertEquals(set.size(), 6);
-        assertTrue(set.contains("a"));
-        assertTrue(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertTrue(set.contains("d"));
-        assertTrue(set.contains("e"));
-        assertTrue(set.contains("f"));
-
-        set.delete("h");
-        assertEquals(set.size(), 6);
-
-        set.delete("d");
-        assertEquals(set.size(), 5);
-        assertTrue(set.contains("a"));
-        assertTrue(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertFalse(set.contains("d"));
-        assertTrue(set.contains("e"));
-        assertTrue(set.contains("f"));
-
-        set.delete("b");
-        assertEquals(set.size(), 4);
-        assertTrue(set.contains("a"));
-        assertFalse(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertFalse(set.contains("d"));
-        assertTrue(set.contains("e"));
-        assertTrue(set.contains("f"));
-
-        set.delete("f");
-        assertEquals(set.size(), 3);
-        assertTrue(set.contains("a"));
-        assertFalse(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertFalse(set.contains("d"));
-        assertTrue(set.contains("e"));
-        assertFalse(set.contains("f"));
-
-        set.delete("a");
-        assertEquals(set.size(), 2);
-        assertFalse(set.contains("a"));
-        assertFalse(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertFalse(set.contains("d"));
-        assertTrue(set.contains("e"));
-        assertFalse(set.contains("f"));
-
-        set.delete("e");
-        assertEquals(set.size(), 1);
-        assertFalse(set.contains("a"));
-        assertFalse(set.contains("b"));
-        assertTrue(set.contains("c"));
-        assertFalse(set.contains("d"));
-        assertFalse(set.contains("e"));
-        assertFalse(set.contains("f"));
-
-        set.delete("c");
-        assertEquals(set.size(), 0);
-        assertFalse(set.contains("a"));
-        assertFalse(set.contains("b"));
-        assertFalse(set.contains("c"));
-        assertFalse(set.contains("d"));
-        assertFalse(set.contains("e"));
-        assertFalse(set.contains("f"));
-    }
 
     @Test
     void findLast_findFirst() {
@@ -236,51 +112,4 @@ public class OpenAddressedHashSetTest {
         assertEquals(set.first(), "w");
         assertEquals(set.findNext(set.first()), "d");
     }
-
-    @ParameterizedTest
-    @MethodSource("outOfOrderArgumentsProvider")
-    void testGrowth(Integer[] input) {
-        OpenAddressedHashSet<Integer> set = new OpenAddressedHashSet<>();
-        LinkedSequence<Integer> allSeen = new LinkedSequence<>(input);
-
-        for (int i = 0; i < input.length; i++) {
-            set.add(i);
-        }
-
-        Integer val = set.first();
-        while (val != null) {
-            // VERY COSTLY REMOVAL
-            for (int i = 0; i < allSeen.size(); i++) {
-                if (Objects.equals(allSeen.at(i), val)) {
-                    allSeen.deleteAt(i);
-                    break;
-                }
-            }
-
-            val = set.findNext(val);
-        }
-
-        assertEquals(allSeen.size(), 0);
-        assertEquals(set.size(), input.length);
-    }
-
-
-    static Stream<Arguments> outOfOrderArgumentsProvider() {
-        int times = 500;
-        Arguments[] arguments = new Arguments[times];
-        for (int i = 0; i < times; i++) {
-            arguments[i] = Arguments.of((Object) generateArray(i + 1));
-        }
-
-        return Arrays.stream(arguments);
-    }
-
-    static Integer[] generateArray(int size) {
-        Integer[] array = new Integer[size];
-        for (int i = 0; i < size; i++) {
-            array[i] = i;
-        }
-        return array;
-    }
-
 }

@@ -1,15 +1,16 @@
 package datastructures.map;
 
 import datastructures.set.ChainHashSet;
+import datastructures.set.SortedSequenceSet;
 
 import java.util.Objects;
 
 /**
  * Quick impl to solve challenge, might come back later
  */
-public class ChainHashMap<K, V> {
+public class ChainHashMap<K extends Comparable<K>, V> {
 
-    record KeyValue<K,V>(K key, V value) {
+    record KeyValue<K, V>(K key, V value) {
 
         @Override
         public boolean equals(Object o) {
@@ -18,16 +19,22 @@ public class ChainHashMap<K, V> {
             KeyValue<?, ?> keyValue = (KeyValue<?, ?>) o;
             return Objects.equals(key, keyValue.key);
         }
+
         @Override
         public int hashCode() {
             return Objects.hash(key);
         }
 
     }
-    ChainHashSet<KeyValue<K,V>> set;
+
+    ChainHashSet<KeyValue<K, V>> set;
 
     public ChainHashMap() {
         set = new ChainHashSet<>();
+    }
+
+    public ChainHashMap(int size) {
+        set = new ChainHashSet<>(size);
     }
 
     public void add(K key, V value) {
@@ -53,6 +60,17 @@ public class ChainHashMap<K, V> {
 
     public int size() {
         return set.size();
+    }
+
+    public SortedSequenceSet<K> keys() {
+        SortedSequenceSet<K> keys = new SortedSequenceSet<>(size());
+        KeyValue<K, V> next = set.first();
+        while (next != null) {
+            keys.add(next.key);
+            next = set.findNext(next);
+        }
+
+        return keys;
     }
 
 }
