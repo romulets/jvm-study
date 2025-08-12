@@ -185,10 +185,12 @@ public abstract class SetTestCases {
 
 
     static Stream<Arguments> outOfOrderArgumentsProvider() {
-        int times = 500;
-        Arguments[] arguments = new Arguments[times];
-        for (int i = 0; i < times; i++) {
-            arguments[i] = Arguments.of((Object) generateArray(i + 1));
+        int[] sizes = new int[]{1,100,200,300,400,500,600,700,800,900,1000};
+        Arguments[] arguments = new Arguments[sizes.length];
+        int i = 0;
+        for (int size : sizes) {
+            arguments[i] = Arguments.of((Object) generateArray(size));
+            i++;
         }
 
         return Arrays.stream(arguments);

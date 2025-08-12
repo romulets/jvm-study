@@ -10,6 +10,9 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
     public BinaryTreeSet() {
     }
 
+    /**
+     * O(n)
+     */
     public BinaryTreeSet(T[] values) {
         if (values == null) {
             return;
@@ -20,17 +23,26 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         }
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public boolean contains(T value) {
         return find(value) != null;
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T find(T value) {
         AVLTree<T> subtree = findSubTree(value);
         return subtree == null ? null : subtree.value();
     }
 
+    /**
+     * O(log(n))
+     */
     private AVLTree<T> findSubTree(T value) {
         if (value == null) {
             return null;
@@ -55,6 +67,12 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         return null;
     }
 
+    /**
+     * O(log(n)**2)
+     * I believe it's log(n) to power 2 worst case
+     * because we are also performing next and previous
+     * inside of the search loop that is log(n)
+     */
     private AVLTree<T> findToInsertInOrder(T value) {
         if (value == null) {
             return null;
@@ -111,6 +129,12 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         return null;
     }
 
+    /**
+     * O(log(n)**2)
+     * I believe it's log(n) to power 2 worst case
+     * because we are also performing next and previous
+     * inside of the search loop that is log(n)
+     */
     @Override
     public void add(T value) {
         if (value == null) {
@@ -134,6 +158,9 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         tree = insertion.insertNodeAfter(value);
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public void delete(T value) {
         AVLTree<T> subTree = findSubTree(value);
@@ -144,18 +171,27 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         tree = subTree.deleteNode();
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T first() {
         AVLTree<T> first = tree.first();
         return first != null ? first.value() : null;
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T last() {
         AVLTree<T> last = tree.last();
         return last != null ? last.value() : null;
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T findPrevious(T value) {
         AVLTree<T> subTree = findSubTree(value);
@@ -167,6 +203,9 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         return previous != null ? previous.value() : null;
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T findNext(T value) {
         AVLTree<T> subTree = findSubTree(value);
@@ -178,6 +217,9 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         return next != null ? next.value() : null;
     }
 
+    /**
+     * O(1)
+     */
     @Override
     public int size() {
         return tree != null ? tree.size() : 0;

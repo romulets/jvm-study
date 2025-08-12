@@ -57,7 +57,6 @@ public class BinaryTreeSetTest extends SetTestCases {
         assertEquals(9, set.size());
     }
 
-
     @Test
     void insertRandomPlaces() {
         BinaryTreeSet<Integer> set = new BinaryTreeSet<>();
