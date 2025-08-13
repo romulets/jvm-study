@@ -305,6 +305,13 @@ public class AVLTree<T> {
     }
 
     /**
+     *O(1)
+     */
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    /**
      * O(n)
      */
     public String transversalOrder() {

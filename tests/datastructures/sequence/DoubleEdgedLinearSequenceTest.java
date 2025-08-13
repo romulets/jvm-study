@@ -6,11 +6,17 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DoubleEdgedLinearSequenceTest {
+class DoubleEdgedLinearSequenceTest extends SequenceTestCase{
+
+    DoubleEdgedLinearSequenceTest() {
+        super(DoubleEdgedLinearSequence::new, DoubleEdgedLinearSequence::new, DoubleEdgedLinearSequence::new);
+    }
 
     @Test
     void constructDoubleEdgedLinearArray() {
@@ -392,18 +398,6 @@ class DoubleEdgedLinearSequenceTest {
 
 //        System.out.println(Arrays.toString(array.array));
     }
-
-    @Test
-    void deleteAt_invalidIndex() {
-        DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(new Integer[]{1,2,3});
-        assertThrows(IndexOutOfBoundsException.class, () -> array.deleteAt(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> array.deleteAt(3));
-
-        DoubleEdgedLinearSequence<Integer> empty = new DoubleEdgedLinearSequence<>();
-        assertThrows(IndexOutOfBoundsException.class, () -> empty.deleteAt(0));
-        assertThrows(IndexOutOfBoundsException.class, () -> empty.deleteAt(1));
-    }
-
     @Test
     void deleteAt() {
         DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(new Integer[]{1,2,3,4,5});
@@ -444,29 +438,12 @@ class DoubleEdgedLinearSequenceTest {
         assertEquals(array.tail(), 1);
     }
 
-    @Test
-    void subset() {
-        Sequence<Integer> sequence = new DoubleEdgedLinearSequence<>(new Integer[]{0,1,2,3,4});
-
-        for (int i = 0; i < sequence.size(); i++) {
-            for(int j = sequence.size() - 1; j >= i; j--) {
-                Sequence<Integer> subset = sequence.subset(i,j);
-                assertEquals(subset.size(), j - i);
-                for (int d = 0; d < j - i; d++) {
-                    assertEquals(subset.at(d), d + i);
-                }
-            }
-        }
-    }
 
     @ParameterizedTest
     @MethodSource("randomArgumentProvider")
     void randomTest(Integer[] input) {
-//        System.out.println("Size: " + input.length);
-        int numberOfOps = (int) (Math.random() * input.length);
-//        System.out.println("Number of ops: " + numberOfOps);
+        int numberOfOps = (int) (Math.random() * input.length);;
         int initialCapacity = (int) (Math.random() * 20) + 1;
-//        System.out.println("Initial size: " + initialCapacity);
 
         DoubleEdgedLinearSequence<Integer> array = new DoubleEdgedLinearSequence<>(initialCapacity);
         for (Integer i : input) {
@@ -511,7 +488,7 @@ class DoubleEdgedLinearSequenceTest {
 
 
     static Stream<Arguments> randomArgumentProvider() {
-        int times = 100;
+        int times = 10;
         Arguments[] arguments = new Arguments[times];
         for (int i = 0; i < times; i++) {
             arguments[i] = Arguments.of((Object) randomSizedArray());

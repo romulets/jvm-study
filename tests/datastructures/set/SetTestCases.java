@@ -185,7 +185,7 @@ public abstract class SetTestCases {
 
 
     static Stream<Arguments> outOfOrderArgumentsProvider() {
-        int[] sizes = new int[]{1,100,200,300,400,500,600,700,800,900,1000};
+        int[] sizes = new int[]{1, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
         Arguments[] arguments = new Arguments[sizes.length];
         int i = 0;
         for (int size : sizes) {

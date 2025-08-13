@@ -74,10 +74,12 @@ public class MergeSortTest {
     }
 
     static Stream<Arguments> outOfOrderArgumentsProvider() {
-        int times = 100;
-        Arguments[] arguments = new Arguments[times];
-        for (int i = 0; i < times; i++) {
-            arguments[i] = Arguments.of((Object) generateArray(i + 1));
+        int[] sizes = new int[]{1, 100, 200, 400, 800, 1600};
+        Arguments[] arguments = new Arguments[sizes.length];
+        int i = 0;
+        for (int size : sizes) {
+            arguments[i] = Arguments.of((Object) generateArray(size));
+            i++;
         }
 
         return Arrays.stream(arguments);

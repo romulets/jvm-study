@@ -128,7 +128,7 @@ public class DoubleEdgedLinearSequence<T> implements Sequence<T> {
      */
     @Override
     public void insertAt(int pos, T value) {
-        if (pos > size) {
+        if (pos > size || pos < 0) {
             throw new IndexOutOfBoundsException("Can't set position " + pos + " for size " + size);
         }
 

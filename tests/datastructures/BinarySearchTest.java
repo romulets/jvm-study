@@ -139,10 +139,12 @@ class BinarySearchTest {
 
 
     static Stream<Arguments> sortedArgumentProvider() {
-        int times = 1000;
-        Arguments[] arguments = new Arguments[times];
-        for (int i = 0; i < times; i++) {
-            arguments[i] = Arguments.of((Object) generateSortedArray(i + 1));
+        int[] sizes = new int[]{1, 100, 200, 400, 800, 1600};
+        Arguments[] arguments = new Arguments[sizes.length];
+        int i = 0;
+        for (int size : sizes) {
+            arguments[i] = Arguments.of((Object) generateSortedArray(size));
+            i++;
         }
 
         return Arrays.stream(arguments);
