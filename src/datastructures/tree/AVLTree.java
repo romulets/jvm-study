@@ -55,6 +55,9 @@ public class AVLTree<T> {
         return balanceHeight();
     }
 
+    /**
+     * O(log(n))
+     */
     public AVLTree<T> insertNodeAfter(T value) {
         if (this.right == null) {
             this.right = new AVLTree<>(value);
@@ -82,6 +85,9 @@ public class AVLTree<T> {
         return previousParent;
     }
 
+    /**
+     * O(1)
+     */
     private void updateComputedProperties() {
         this.size = size(left) + size(right) + 1;
         this.height = Math.max(height(left), height(right)) + 1;
@@ -238,6 +244,9 @@ public class AVLTree<T> {
         return toBeDeleted.deleteLeaf();
     }
 
+    /**
+     * O(log(n)
+     */
     private AVLTree<T> deleteLeaf() {
         if (parent == null) {
             return null;
@@ -402,6 +411,7 @@ public class AVLTree<T> {
 
         return parentLadder;
     }
+
     /**
      * O(log(n))
      */
@@ -483,10 +493,16 @@ public class AVLTree<T> {
         return "<" + this.value + " (s:" + size + " h: " + height + ")>";
     }
 
+    /**
+     * O(1)
+     */
     public AVLTree<T> left() {
         return left;
     }
 
+    /**
+     * O(1)
+     */
     public AVLTree<T> right() {
         return right;
     }
