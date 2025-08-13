@@ -9,6 +9,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
     public BinaryTreeSequence() {
     }
 
+    /**
+     * O(n)
+     */
     public BinaryTreeSequence(T[] values) {
         if (values == null) {
             return;
@@ -19,6 +22,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         }
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public void insertLast(T value) {
         if (tree == null) {
@@ -29,6 +35,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         tree = tree.insertLast(value);
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public void insertFirst(T value) {
         if (tree == null) {
@@ -39,6 +48,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         tree = tree.insertFirst(value);
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public void insertAt(int pos, T value) {
         if (pos < 0 || pos > size()) {
@@ -61,6 +73,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         tree = previous.insertNodeAfter(value);
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T deleteAt(int pos) {
         if (pos < 0 || pos >= size()) {
@@ -71,12 +86,18 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         return deleteItem(item);
     }
 
+    /**
+     * O(log(n))
+     */
     private T deleteItem(AVLTree<T> item) {
         T value = item.value();
         tree = item.deleteNode();
         return value;
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T deleteLast() {
         if (tree == null) {
@@ -88,6 +109,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         return deleteItem(item);
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T deleteFirst() {
         if (tree == null) {
@@ -98,6 +122,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         return deleteItem(item);
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T at(int i) {
         if (i < 0 || i >= size()) {
@@ -107,6 +134,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         return tree.transversalOrderAt(i).value();
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T first() {
         if (tree == null) {
@@ -116,6 +146,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         return tree.first().value();
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public T last() {
         if (tree == null) {
@@ -125,6 +158,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         return tree.last().value();
     }
 
+    /**
+     * O(n)
+     */
     @Override
     public Sequence<T> subset(int begin, int end) {
         BinaryTreeSequence<T> copy = new BinaryTreeSequence<>();
@@ -134,6 +170,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         return copy;
     }
 
+    /**
+     * O(log(n))
+     */
     @Override
     public void set(int i, T value) {
         if (i < 0 || i >= size()) {
@@ -143,6 +182,9 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
         tree.transversalOrderAt(i).setValue(value);
     }
 
+    /**
+     * O(1)
+     */
     @Override
     public int size() {
         return tree != null ? tree.size() : 0;

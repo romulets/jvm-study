@@ -402,21 +402,31 @@ public class AVLTree<T> {
 
         return parentLadder;
     }
-
     /**
-     * O(n)
+     * O(log(n))
      */
     public AVLTree<T> transversalOrderAt(int pos) {
         if (pos < 0 || pos >= size) {
             throw new IllegalArgumentException("Can't access node " + pos + " in a tree of size pos");
         }
 
-        AVLTree<T> atPos = this.first();
-        for (int i = 0; i < pos; i++) {
-            atPos = atPos.next();
+        AVLTree<T> current = this;
+        int currentPos = size(current.left);
+        while (currentPos != pos) {
+            if (pos > currentPos) {
+                // if index is larger, it's to my right
+                current = current.right;
+                // I only need to look for the next items
+                pos = pos - currentPos - 1;
+            } else {
+                // to my left
+                current = current.left;
+            }
+
+            currentPos = size(current.left);
         }
 
-        return atPos;
+        return current;
     }
 
     /**
