@@ -101,6 +101,34 @@ public class AVLTree<T> {
         return previousParent;
     }
 
+    public AVLTree<T> insertNodeBefore(T value) {
+        if (this.left == null) {
+            this.left = this.treeAdapter.apply(value);
+        } else {
+            AVLTree<T> tmp = this.left;
+            this.left = this.treeAdapter.apply(value);
+            this.left.left = tmp;
+            this.left.left.parent = this.right;
+            this.left.updateComputedProperties();
+        }
+
+        this.left.parent = this;
+        this.updateComputedProperties();
+
+        // return parent
+        AVLTree<T> parent = this;
+        AVLTree<T> previousParent = parent;
+        while (parent != null) {
+            // doing for each parent to make sure we are balanced after insertion
+            parent = parent.balanceHeight();
+            parent.updateComputedProperties();
+            previousParent = parent;
+            parent = parent.parent;
+        }
+
+        return previousParent;
+    }
+
     /**
      * O(1)
      */

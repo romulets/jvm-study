@@ -98,62 +98,45 @@ public class AVLTreeSet<T extends Comparable<T>> implements Set<T> {
             return null;
         }
 
-        AVLTree<T> first = tree.first();
-        int compareFirst = value.compareTo(first.value());
-        if (compareFirst == 0) {
-            return first;
-        } else if (compareFirst < 0) {
-            // No previous, null
-            return null;
-        }
-
-        AVLTree<T> last = tree.last();
-        if (value.compareTo(last.value()) >= 0) {
-            return last;
-        }
-
         AVLTree<T> inSearch = tree;
+        AVLTree<T> previous = null;
         while (inSearch != null) {
             int comparison = value.compareTo(inSearch.value());
             if (comparison == 0) {
-                return inSearch; // return exact match
+                return inSearch; //found
             }
 
-            AVLTree<T> next = inSearch.next();
-            AVLTree<T> previous = inSearch.previous();
-
+            previous = inSearch;
             if (comparison > 0) {
-                // current value is bigger than inSearch
-
-                // If value is larger than InSearch and smaller than next
-                if (value.compareTo(next.value()) <= 0) {
-                    return inSearch;
-                }
-
                 // value is bigger, to the right
                 inSearch = inSearch.right();
             } else {
-                // current value is smaller than inSearch
-
-                // If value is smaller than InSearch and larger than previous
-                if (value.compareTo(previous.value()) >= 0) {
-                    // insert after previous
-                    return previous;
-                }
-
                 // value is smaller, to the left
                 inSearch = inSearch.left();
             }
         }
 
-        return null;
+        // Return previous because it a value must be inserted
+        // at the edge of the tree the binary search was not found.
+        // e.g., for the below tree, insert h and a
+        //           d
+        //       b        f
+        //          c   e    g
+        //
+        //  `a` comes on the left of `b` and `h` on the right of `g`
+        //
+        //  Or consider the three, insert 8 and 11
+        //           9
+        //       5        10
+        //          7         14
+        //
+        //   8 comes to left of 7, and 11 comes to left of 14.
+        //  If the tree becomes unbalanced, we balance it, and we have a balanced tree in orde
+        return previous;
     }
 
     /**
-     * O(log(n)**2)
-     * I believe it's log(n) to power 2 worst case
-     * because we are also performing next and previous
-     * inside of the search loop that is log(n)
+     * O(log(n))
      */
     @Override
     public void add(T value) {
@@ -176,7 +159,11 @@ public class AVLTreeSet<T extends Comparable<T>> implements Set<T> {
             return;
         }
 
-        tree = insertion.insertNodeAfter(value);
+        if (value.compareTo(insertion.value()) > 0) {
+            tree = insertion.insertNodeAfter(value);
+        } else {
+            tree = insertion.insertNodeBefore(value);
+        }
     }
 
     /**

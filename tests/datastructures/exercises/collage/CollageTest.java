@@ -1,4 +1,4 @@
-package datastructures.exercises;
+package datastructures.exercises.collage;
 
 import datastructures.exercises.collage.Collage;
 import org.junit.jupiter.api.Test;

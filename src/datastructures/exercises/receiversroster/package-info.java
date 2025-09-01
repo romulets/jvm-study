@@ -17,4 +17,4 @@
  *     <li>ranked receiver(k) return the jersey with the kth highest performance</li>
  * </ul>
  */
-package datastructures.exercises.receiverroster;
+package datastructures.exercises.receiversroster;
