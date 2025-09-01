@@ -2,17 +2,17 @@ package datastructures.sequence;
 
 import datastructures.tree.AVLTree;
 
-public class BinaryTreeSequence<T> implements Sequence<T> {
+public class AVLTreeSequence<T> implements Sequence<T> {
 
     AVLTree<T> tree;
 
-    public BinaryTreeSequence() {
+    public AVLTreeSequence() {
     }
 
     /**
      * O(n)
      */
-    public BinaryTreeSequence(T[] values) {
+    public AVLTreeSequence(T[] values) {
         if (values == null) {
             return;
         }
@@ -163,7 +163,7 @@ public class BinaryTreeSequence<T> implements Sequence<T> {
      */
     @Override
     public Sequence<T> subset(int begin, int end) {
-        BinaryTreeSequence<T> copy = new BinaryTreeSequence<>();
+        AVLTreeSequence<T> copy = new AVLTreeSequence<>();
         for (int i = begin; i < end; i++) {
             copy.insertLast(at(i));
         }

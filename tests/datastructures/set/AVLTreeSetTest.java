@@ -5,19 +5,19 @@ import org.junit.jupiter.api.Test;
 import static datastructures.tree.AVLTreePrint.printTree;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BinaryTreeSetTest extends SetTestCases {
+public class AVLTreeSetTest extends SetTestCases {
 
-    protected BinaryTreeSetTest() {
+    protected AVLTreeSetTest() {
         super(
-                BinaryTreeSet::new,
-                size -> new BinaryTreeSet<>(),
-                BinaryTreeSet::new
+                AVLTreeSet::new,
+                size -> new AVLTreeSet<>(),
+                AVLTreeSet::new
         );
     }
 
     @Test
     void insertAlwaysInOrder() {
-        BinaryTreeSet<Integer> set = new BinaryTreeSet<>();
+        AVLTreeSet<Integer> set = new AVLTreeSet<>();
         set.add(1);
 
         assertEquals("1", set.tree.transversalOrder());
@@ -59,7 +59,7 @@ public class BinaryTreeSetTest extends SetTestCases {
 
     @Test
     void insertRandomPlaces() {
-        BinaryTreeSet<Integer> set = new BinaryTreeSet<>();
+        AVLTreeSet<Integer> set = new AVLTreeSet<>();
 
         set.add(8);
         assertEquals("8", set.tree.transversalOrder());
@@ -114,7 +114,7 @@ public class BinaryTreeSetTest extends SetTestCases {
 
     @Test
     void findNext() {
-        Set<String> set = new BinaryTreeSet<>(new String[]{"b", "d", "a", "c", "f", "e"});
+        Set<String> set = new AVLTreeSet<>(new String[]{"b", "d", "a", "c", "f", "e"});
         String[] expectedSequence = new String[]{"a", "b", "c", "d", "e", "f"};
 
         String next = set.first();
@@ -126,7 +126,7 @@ public class BinaryTreeSetTest extends SetTestCases {
 
     @Test
     void findPrevious() {
-        Set<String> set = new BinaryTreeSet<>(new String[]{"b", "d", "a", "c", "f", "e"});
+        Set<String> set = new AVLTreeSet<>(new String[]{"b", "d", "a", "c", "f", "e"});
 
         String[] expectedSequence = new String[]{"f", "e", "d", "c", "b", "a"};
 

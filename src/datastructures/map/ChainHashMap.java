@@ -3,29 +3,12 @@ package datastructures.map;
 import datastructures.set.ChainHashSet;
 import datastructures.set.SortedSequenceSet;
 
-import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Quick impl to solve challenge, might come back later
  */
-public class ChainHashMap<K extends Comparable<K>, V> {
-
-    record KeyValue<K, V>(K key, V value) {
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            KeyValue<?, ?> keyValue = (KeyValue<?, ?>) o;
-            return Objects.equals(key, keyValue.key);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(key);
-        }
-
-    }
+public class ChainHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     ChainHashSet<KeyValue<K, V>> set;
 
@@ -37,6 +20,7 @@ public class ChainHashMap<K extends Comparable<K>, V> {
         set = new ChainHashSet<>(size);
     }
 
+    @Override
     public void add(K key, V value) {
         if (key == null) {
             return;
@@ -45,6 +29,7 @@ public class ChainHashMap<K extends Comparable<K>, V> {
         set.add(new KeyValue<>(key, value));
     }
 
+    @Override
     public V get(K key) {
         if (key == null) {
             return null;
@@ -58,15 +43,26 @@ public class ChainHashMap<K extends Comparable<K>, V> {
         return pair.value();
     }
 
+    @Override
     public int size() {
         return set.size();
+    }
+
+    @Override
+    public V getOrDefault(K key, Function<K, V> init) {
+        V value = get(key);
+        if (key == null) {
+            value = init.apply(key);
+            add(key, value);
+        }
+        return value;
     }
 
     public SortedSequenceSet<K> keys() {
         SortedSequenceSet<K> keys = new SortedSequenceSet<>(size());
         KeyValue<K, V> next = set.first();
         while (next != null) {
-            keys.add(next.key);
+            keys.add(next.key());
             next = set.findNext(next);
         }
 

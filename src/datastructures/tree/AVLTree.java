@@ -1,5 +1,10 @@
 package datastructures.tree;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+
 /**
  * Keeps height balanced
  * Does not guarantee order
@@ -14,10 +19,21 @@ public class AVLTree<T> {
     private int size;
     private int height;
 
+    private final Function<T, AVLTree<T>> treeAdapter;
+
+    public AVLTree(T value, Function<T, AVLTree<T>> treeAdapter) {
+        this.value = value;
+        size = 1;
+        height = 1;
+        this.treeAdapter = treeAdapter;
+        this.updateComputedProperties();
+    }
+
     public AVLTree(T value) {
         this.value = value;
         size = 1;
         height = 1;
+        this.treeAdapter = AVLTree::new;
     }
 
     /**
@@ -29,14 +45,13 @@ public class AVLTree<T> {
         if (this.right != null) { // if we have a left, add to its node
             this.right.insertLast(value);
         } else { // if we don't have a left, add a new left
-            this.right = new AVLTree<>(value);
+            this.right = this.treeAdapter.apply(value);
             this.right.parent = this;
         }
 
         updateComputedProperties();
         return balanceHeight();
     }
-
 
     /**
      * O(log(n))
@@ -47,7 +62,7 @@ public class AVLTree<T> {
         if (this.left != null) { // if we have a left, add to its node
             this.left.insertFirst(value);
         } else { // if we don't have a left, add a new left
-            this.left = new AVLTree<>(value);
+            this.left = this.treeAdapter.apply(value);
             this.left.parent = this;
         }
 
@@ -60,19 +75,20 @@ public class AVLTree<T> {
      */
     public AVLTree<T> insertNodeAfter(T value) {
         if (this.right == null) {
-            this.right = new AVLTree<>(value);
+            this.right = this.treeAdapter.apply(value);
         } else {
             AVLTree<T> tmp = this.right;
-            this.right = new AVLTree<>(value);
+            this.right = this.treeAdapter.apply(value);
             this.right.right = tmp;
             this.right.right.parent = this.right;
             this.right.updateComputedProperties();
         }
 
         this.right.parent = this;
+        this.updateComputedProperties();
 
         // return parent
-        AVLTree<T> parent = balanceHeight();
+        AVLTree<T> parent = this;
         AVLTree<T> previousParent = parent;
         while (parent != null) {
             // doing for each parent to make sure we are balanced after insertion
@@ -88,7 +104,7 @@ public class AVLTree<T> {
     /**
      * O(1)
      */
-    private void updateComputedProperties() {
+    protected void updateComputedProperties() {
         this.size = size(left) + size(right) + 1;
         this.height = Math.max(height(left), height(right)) + 1;
     }
@@ -161,7 +177,7 @@ public class AVLTree<T> {
 
         if (unchangedParent != null) {
             // points to the newRoot
-            if (unchangedParent.right == this) {
+            if (Objects.equals(unchangedParent.right, this)) {
                 unchangedParent.right = newRoot;
             } else {
                 unchangedParent.left = newRoot;
@@ -201,7 +217,7 @@ public class AVLTree<T> {
 
         if (unchangedParent != null) {
             // points to the newRoot
-            if (unchangedParent.right == this) {
+            if (Objects.equals(unchangedParent.right, this)) {
                 unchangedParent.right = newRoot;
             } else {
                 unchangedParent.left = newRoot;
@@ -252,9 +268,9 @@ public class AVLTree<T> {
             return null;
         }
 
-        if (this.parent.left == this) {
+        if (Objects.equals(this.parent.left, this)) {
             this.parent.left = null;
-        } else if (this.parent.right == this) {
+        } else if (Objects.equals(this.parent.right, this)) {
             this.parent.right = null;
         }
 
@@ -395,7 +411,7 @@ public class AVLTree<T> {
 
         // after a, is b
         // after e, is f
-        if (parent.left == this) {
+        if (Objects.equals(parent.left, this)) {
             return parent;
         }
 
@@ -404,7 +420,7 @@ public class AVLTree<T> {
         AVLTree<T> parentLadder = parent;
         AVLTree<T> current = this;
         // While the current branch is the right side of parent, walk up!
-        while (parentLadder != null && parentLadder.right == current) {
+        while (parentLadder != null && Objects.equals(parentLadder.right, current)) {
             current = parentLadder;
             parentLadder = current.parent;
         }
@@ -468,7 +484,7 @@ public class AVLTree<T> {
 
         // before g is f
         // before c is b
-        if (parent.right == this) {
+        if (Objects.equals(parent.right, this)) {
             return parent;
         }
 
@@ -477,7 +493,7 @@ public class AVLTree<T> {
         AVLTree<T> parentLadder = parent;
         AVLTree<T> current = this;
         // While the current branch is the left side of parent, walk up!
-        while (parentLadder != null && parentLadder.left == current) {
+        while (parentLadder != null && Objects.equals(parentLadder.left, current)) {
             current = parentLadder;
             parentLadder = current.parent;
         }
@@ -505,5 +521,9 @@ public class AVLTree<T> {
      */
     public AVLTree<T> right() {
         return right;
+    }
+
+    public AVLTree<T> parent() {
+        return parent;
     }
 }

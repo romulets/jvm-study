@@ -56,15 +56,19 @@ public class SortedSequenceSet<T extends Comparable<T>> implements Set<T> {
 
     /**
      * O(log(n)) deletes entry if it exists
+     *
+     * @return
      */
     @Override
-    public void delete(T value) {
+    public T delete(T value) {
         int idx = BinarySearch.search(sequence, value);
         if (idx == -1) {
-            return;
+            return null;
         }
 
+        T refToValue = sequence.at(idx);
         sequence.deleteAt(idx);
+        return refToValue;
     }
 
     /**

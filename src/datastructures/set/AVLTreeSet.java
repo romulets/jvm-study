@@ -1,19 +1,33 @@
 package datastructures.set;
 
+import datastructures.sequence.LinkedSequence;
 import datastructures.tree.AVLTree;
 
-public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
+import java.lang.reflect.Array;
+import java.util.function.Function;
+
+public class AVLTreeSet<T extends Comparable<T>> implements Set<T> {
 
     AVLTree<T> tree;
+    Function<T, AVLTree<T>> treeAdapter;
+
+    private boolean allowDuplicates;
 
 
-    public BinaryTreeSet() {
+    public AVLTreeSet(Function<T, AVLTree<T>> treeAdapter) {
+        this.treeAdapter = treeAdapter;
+        this.allowDuplicates = false;
+    }
+
+    public AVLTreeSet() {
+        this(AVLTree::new);
     }
 
     /**
      * O(n)
      */
-    public BinaryTreeSet(T[] values) {
+    public AVLTreeSet(T[] values) {
+        this();
         if (values == null) {
             return;
         }
@@ -21,6 +35,12 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         for (T value : values) {
             add(value);
         }
+    }
+
+    public static <T extends Comparable<T>> AVLTreeSet<T> allowDuplicates() {
+        AVLTreeSet<T> set = new AVLTreeSet<>();
+        set.allowDuplicates = true;
+        return set;
     }
 
     /**
@@ -142,7 +162,7 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
         }
 
         if (tree == null) {
-            tree = new AVLTree<>(value);
+            tree = treeAdapter.apply(value);
             return;
         }
 
@@ -151,7 +171,8 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
             tree = tree.insertFirst(value);
             return;
         }
-        if (value.equals(insertion.value())) {
+
+        if (value.equals(insertion.value()) && !allowDuplicates) {
             return;
         }
 
@@ -162,13 +183,15 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
      * O(log(n))
      */
     @Override
-    public void delete(T value) {
+    public T delete(T value) {
         AVLTree<T> subTree = findSubTree(value);
         if (subTree == null) {
-            return;
+            return null;
         }
 
+        T refToValue = subTree.value();
         tree = subTree.deleteNode();
+        return refToValue;
     }
 
     /**
@@ -223,5 +246,46 @@ public class BinaryTreeSet<T extends Comparable<T>> implements Set<T> {
     @Override
     public int size() {
         return tree != null ? tree.size() : 0;
+    }
+
+    public AVLTree<T> head() {
+        return tree;
+    }
+
+
+    /**
+     * O(n)
+     * <a href="https://codestandard.net/articles/binary-tree-inorder-traversal/">Reference</a>
+     */
+    public T[] top(int topN) {
+        if (size() == 0) {
+            // we should return empty, but due to limitations in java we can't :clown:
+            return null;
+        }
+
+        int itemsCount = Math.min(size(), topN);
+        T[] items = (T[]) Array.newInstance(tree.value().getClass(), itemsCount);
+
+
+        LinkedSequence<AVLTree<T>> stack = new LinkedSequence<>();
+        AVLTree<T> current = tree;
+        int i = 0;
+        while ((current != null || stack.size() != 0) && i < itemsCount) {
+
+            // add values to the end of the stack
+            while (current != null) {
+                stack.insertLast(current); // keep saving left
+                current = current.left();
+            }
+
+            // get next inserted last
+            AVLTree<T> popped = stack.deleteLast();
+            items[i] = popped.value();
+            i++;
+
+            current = popped.right();
+        }
+
+        return items;
     }
 }

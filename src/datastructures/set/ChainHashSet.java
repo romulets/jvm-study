@@ -118,21 +118,24 @@ public class ChainHashSet<T> implements Set<T> {
      * O(1) (shrink not implemented)
      */
     @Override
-    public void delete(T value) {
+    public T delete(T value) {
         int pos = findHashPosition(value, hashTable);
         LinkedSequence<T> chain = findChain(pos, hashTable);
 
         if (chain.size() == 0) {
-            return;
+            return null;
         }
 
         for (int i = 0; i < chain.size(); i++) {
-            if (Objects.equals(value, chain.at(i))) {
+            T refToValue = chain.at(i);
+            if (Objects.equals(value, refToValue)) {
                 chain.deleteAt(i);
                 size--;
-                return;
+                return refToValue;
             }
         }
+
+        return null;
     }
 
     /**

@@ -197,16 +197,20 @@ public class OpenAddressedHashSet<T> implements Set<T> {
 
     /**
      * O(log(n)) if probing needed
+     *
+     * @return
      */
     @Override
-    public void delete(T value) {
+    public T delete(T value) {
         int pos = findPos(value);
         if (pos == -1) {
-            return;
+            return value;
         }
 
+        T refToValue = (T) hashTable[pos];
         hashTable[pos] = THUMB_STONE;
         size--;
+        return refToValue;
     }
 
     /**

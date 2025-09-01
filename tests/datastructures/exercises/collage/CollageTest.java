@@ -1,5 +1,6 @@
 package datastructures.exercises;
 
+import datastructures.exercises.collage.Collage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -13,7 +13,7 @@ public interface Set<T> {
 
     void add(T value);
 
-    void delete(T value);
+    T delete(T value);
 
     T first();
 
